@@ -60,10 +60,7 @@ export async function signup(formData: FormData) {
       from: "PropertyDrop <onboarding@resend.dev>", // Change this to your verified domain
       to: parsed.data.email,
       subject: "Verify your PropertyDrop account",
-      react: VerificationEmail({
-        name: parsed.data.name,
-        verificationUrl,
-      }),
+      react: <VerificationEmail name={parsed.data.name} verificationUrl={verificationUrl} />,
     });
 
     return {
