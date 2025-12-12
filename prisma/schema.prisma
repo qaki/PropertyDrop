@@ -54,6 +54,11 @@ model User {
     stripeAccountId        String?   @unique @map("stripe_account_id")
     stripeAccountStatus    String?   @default("pending") @map("stripe_account_status") // pending, complete, restricted
 
+    // Whop Subscription (Photographer pays PropertyDrop)
+    whopMembershipId       String?   @unique @map("whop_membership_id")
+    subscriptionStatus     String?   @default("inactive") @map("subscription_status") // active, inactive, cancelled
+    subscriptionExpiresAt  DateTime? @map("subscription_expires_at")
+
     accounts      Account[]
     sessions      Session[]
     jobs          Job[]
