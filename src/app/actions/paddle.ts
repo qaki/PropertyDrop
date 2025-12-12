@@ -3,7 +3,7 @@
 import { paddle } from "~/lib/paddle";
 import { db } from "~/server/db";
 import { headers } from "next/headers";
-import type { CreateTransactionRequest } from "@paddle/paddle-node-sdk";
+import type { CreateTransactionRequestBody } from "@paddle/paddle-node-sdk";
 
 export async function createPaddleCheckout(jobId: string) {
   const job = await db.job.findUnique({
@@ -23,7 +23,7 @@ export async function createPaddleCheckout(jobId: string) {
 
   try {
     // Create a Paddle transaction with inline pricing (no Product/Price setup needed for MVP)
-    const transactionData: CreateTransactionRequest = {
+    const transactionData: CreateTransactionRequestBody = {
       items: [
         {
           price: {
