@@ -66,7 +66,8 @@ export async function POST(req: NextRequest) {
 
         // 3. Upload processed version
         const filename = `${config.name}-${asset.originalFilename}`;
-        const processedFile = new File([processedBuffer], filename, { type: "image/jpeg" });
+        // Convert Buffer to Uint8Array for File constructor compatibility
+        const processedFile = new File([new Uint8Array(processedBuffer)], filename, { type: "image/jpeg" });
         const uploadRes = await utapi.uploadFiles([processedFile]);
 
         if (uploadRes[0]?.data?.url) {
