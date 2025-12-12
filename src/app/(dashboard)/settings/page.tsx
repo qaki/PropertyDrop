@@ -6,7 +6,8 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback } from "~/components/ui/avatar";
-import { User, Mail, Lock, CreditCard, Bell, Shield } from "lucide-react";
+import { User, Mail, Lock, CreditCard, Bell, Shield, Wallet } from "lucide-react";
+import { StripeConnectButton } from "./_components/stripe-connect-button";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -193,6 +194,22 @@ export default async function SettingsPage() {
                 Disabled
               </Button>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Payment Settings Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Wallet className="h-5 w-5" />
+              Payment Settings
+            </CardTitle>
+            <CardDescription>
+              Connect your payment account to receive money from clients
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <StripeConnectButton />
           </CardContent>
         </Card>
 

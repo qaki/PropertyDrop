@@ -50,6 +50,10 @@ model User {
     image                  String?
     passwordHash           String?   @map("password_hash")
 
+    // Stripe Connect for receiving payments
+    stripeAccountId        String?   @unique @map("stripe_account_id")
+    stripeAccountStatus    String?   @default("pending") @map("stripe_account_status") // pending, complete, restricted
+
     accounts      Account[]
     sessions      Session[]
     jobs          Job[]

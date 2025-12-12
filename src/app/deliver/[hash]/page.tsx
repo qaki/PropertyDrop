@@ -1,6 +1,6 @@
 import { db } from "~/server/db";
 import { notFound, redirect } from "next/navigation";
-import { createWhopCheckout } from "~/app/actions/whop";
+import { createStripeCheckout } from "~/app/actions/stripe";
 import { markJobAsPaid } from "~/app/actions/test-payment";
 import { AssetGallery } from "./_components/asset-gallery";
 import { DownloadAllButton } from "./_components/download-all-button";
@@ -68,10 +68,10 @@ export default async function DeliveryPage({
             </div>
           ) : (
              <div className="flex flex-col gap-4 items-center">
-               {/* Whop Checkout Button */}
+               {/* Stripe Checkout Button */}
                <form action={async () => {
                   "use server";
-                  const result = await createWhopCheckout(job.id);
+                  const result = await createStripeCheckout(hash);
                   if (result.success && result.url) {
                     redirect(result.url);
                   }

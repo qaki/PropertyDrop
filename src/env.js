@@ -38,6 +38,10 @@ export const env = createEnv({
 
     // Resend (Email)
     RESEND_API_KEY: z.string(),
+
+    // Stripe Payment Gateway
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_WEBHOOK_SECRET: z.string().optional(), // Will add after webhook is created
   },
 
   /**
@@ -50,6 +54,7 @@ export const env = createEnv({
     NEXT_PUBLIC_WHOP_PRODUCT_ID: z.string().optional(), // Whop product/experience ID
     NEXT_PUBLIC_BYPASS_PAYMENT: z.string().optional(), // For testing
     NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(), // Stripe public key
   },
 
   /**
@@ -80,6 +85,10 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BYPASS_PAYMENT: process.env.NEXT_PUBLIC_BYPASS_PAYMENT,
+
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
