@@ -28,10 +28,9 @@ export const env = createEnv({
     AWS_REGION: z.string().optional(),
     AWS_BUCKET_NAME: z.string().optional(),
 
-    // Paddle (Optional for now - can be added later)
-    PADDLE_API_KEY: z.string().optional(),
-    PADDLE_WEBHOOK_SECRET: z.string().optional(),
-    PADDLE_ENVIRONMENT: z.enum(["sandbox", "production"]).default("sandbox").optional(),
+    // Whop Payment Gateway
+    WHOP_API_KEY: z.string().optional(),
+    WHOP_WEBHOOK_SECRET: z.string().optional(),
 
     // Inngest (Made optional)
     INNGEST_EVENT_KEY: z.string().optional(),
@@ -48,7 +47,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: z.string().optional(), // Optional for now
+    NEXT_PUBLIC_WHOP_PRODUCT_ID: z.string().optional(), // Whop product/experience ID
     NEXT_PUBLIC_BYPASS_PAYMENT: z.string().optional(), // For testing
     NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   },
@@ -71,10 +70,9 @@ export const env = createEnv({
     AWS_REGION: process.env.AWS_REGION,
     AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
 
-    PADDLE_API_KEY: process.env.PADDLE_API_KEY || undefined,
-    PADDLE_WEBHOOK_SECRET: process.env.PADDLE_WEBHOOK_SECRET || undefined,
-    PADDLE_ENVIRONMENT: process.env.PADDLE_ENVIRONMENT || "sandbox",
-    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+    WHOP_API_KEY: process.env.WHOP_API_KEY || undefined,
+    WHOP_WEBHOOK_SECRET: process.env.WHOP_WEBHOOK_SECRET || undefined,
+    NEXT_PUBLIC_WHOP_PRODUCT_ID: process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID,
 
     INNGEST_EVENT_KEY: process.env.INNGEST_EVENT_KEY,
     INNGEST_SIGNING_KEY: process.env.INNGEST_SIGNING_KEY,

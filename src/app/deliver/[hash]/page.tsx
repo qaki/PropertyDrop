@@ -1,6 +1,6 @@
 import { db } from "~/server/db";
-import { notFound } from "next/navigation";
-import { createPaddleCheckout } from "~/app/actions/paddle";
+import { notFound, redirect } from "next/navigation";
+import { createWhopCheckout } from "~/app/actions/whop";
 import { markJobAsPaid } from "~/app/actions/test-payment";
 import { AssetGallery } from "./_components/asset-gallery";
 import { DownloadAllButton } from "./_components/download-all-button";
@@ -68,6 +68,22 @@ export default async function DeliveryPage({
             </div>
           ) : (
              <div className="flex flex-col gap-4 items-center">
+               {/* Whop Checkout Button */}
+               <form action={async () => {
+                  "use server";
+                  const result = await createWhopCheckout(job.id);
+                  if (result.success && result.url) {
+                    redirect(result.url);
+                  }
+               }}>
+                  <button
+                      type="submit"
+                      className="bg-indigo-600 text-white px-8 py-4 rounded-md font-bold text-lg hover:bg-indigo-700 transition-colors shadow-lg"
+                  >
+                      💳 Unlock Photos - ${(job.jobAmount / 100).toFixed(2)}
+                  </button>
+               </form>
+               
                {/* TEMPORARY: Manual "Mark as Paid" button for testing */}
                <form action={async () => {
                   "use server";
@@ -77,16 +93,11 @@ export default async function DeliveryPage({
                }}>
                   <button
                       type="submit"
-                      className="bg-green-600 text-white px-8 py-4 rounded-md font-bold text-lg hover:bg-green-700 transition-colors shadow-lg"
+                      className="bg-gray-500 text-white px-6 py-2 rounded-md text-sm hover:bg-gray-600 transition-colors"
                   >
                       🧪 [TEST] Mark as Paid (Skip Payment)
                   </button>
                </form>
-               
-               {/* TODO: Re-enable when Paddle is configured */}
-               <p className="text-sm text-gray-500">
-                 Payment integration temporarily disabled for testing
-               </p>
              </div>
           )}
         </div>
