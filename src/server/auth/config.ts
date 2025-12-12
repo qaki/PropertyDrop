@@ -37,6 +37,7 @@ const loginSchema = z.object({
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig = {
+  trustHost: true, // Trust all hosts in production (required for Render deployment)
   providers: [
     CredentialsProvider({
       name: "Credentials",
