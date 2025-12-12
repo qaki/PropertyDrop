@@ -26,6 +26,7 @@ export async function createPaddleCheckout(jobId: string) {
     const transactionData: CreateTransactionRequestBody = {
       items: [
         {
+          quantity: 1,
           price: {
             description: `Real Estate Photos - ${job.name}`,
             name: `Photos for Job: ${job.name}`,
@@ -33,7 +34,6 @@ export async function createPaddleCheckout(jobId: string) {
               amount: job.jobAmount.toString(), // Paddle expects string, amount in cents
               currencyCode: "USD",
             },
-            quantity: 1,
           },
         },
       ],
