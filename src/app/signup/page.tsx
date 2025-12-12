@@ -23,7 +23,7 @@ export default function SignupPage() {
     try {
       const result = await signup(formData);
       if (result && !result.success) {
-        setError(result.error);
+        setError(result.error ?? "An error occurred");
       } else if (result && result.success) {
         setSuccess(result.message || "Account created! Check your email.");
       }
