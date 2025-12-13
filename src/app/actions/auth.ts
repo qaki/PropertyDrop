@@ -266,12 +266,14 @@ export async function sendPasswordResetEmail(formData: FormData) {
       </html>
     `;
 
-    await resend.emails.send({
+    const emailResult = await resend.emails.send({
       from: "PropertyDrop <no-reply@property-drop.com>",
       to: email,
       subject: "Reset your PropertyDrop password",
       html: resetEmailHTML,
     });
+
+    console.log("Password reset email sent:", emailResult);
 
     return {
       success: true,
@@ -279,9 +281,10 @@ export async function sendPasswordResetEmail(formData: FormData) {
     };
   } catch (error) {
     console.error("Failed to send password reset email:", error);
+    // Still return success to prevent email enumeration
     return {
-      success: false,
-      error: "Failed to send reset email. Please try again.",
+      success: true,
+      message: "If an account exists with that email, you will receive reset instructions.",
     };
   }
 }

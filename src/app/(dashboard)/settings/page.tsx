@@ -8,10 +8,22 @@ import { User, CreditCard, Bell, Shield, Wallet } from "lucide-react";
 import { StripeConnectButton } from "./_components/stripe-connect-button";
 import { ProfileForm } from "./_components/profile-form";
 import { PasswordForm } from "./_components/password-form";
+import { ProfilePhotoUpload } from "./_components/profile-photo-upload";
+import { db } from "~/server/db";
+import { checkSubscriptionStatus } from "~/lib/subscription";
 
 export default async function SettingsPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
+
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!user) redirect("/");
+
+  const subscriptionInfo = checkSubscriptionStatus(user);
+  const hasPaidSubscription = subscriptionInfo.status === "active";
 
   const userInitials = session.user.name
     ?.split(" ")
@@ -48,14 +60,7 @@ export default async function SettingsPage() {
                   {userInitials}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <Button variant="outline" size="sm" disabled>
-                  Change Photo
-                </Button>
-                <p className="text-xs text-muted-foreground mt-2">
-                  JPG, PNG or GIF. Max size 2MB.
-                </p>
-              </div>
+              <ProfilePhotoUpload />
             </div>
 
             <Separator />
@@ -153,55 +158,47 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Billing Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CreditCard className="h-5 w-5" />
-              Billing & Subscription
-            </CardTitle>
-            <CardDescription>
-              Manage your subscription and payment methods
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div>
-                <p className="font-medium">Professional Plan</p>
-                <p className="text-sm text-muted-foreground">
-                  $69/month • Billed monthly
-                </p>
-              </div>
-              <Button variant="outline" size="sm" disabled>
-                Manage
-              </Button>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-2">
-              <p className="text-sm font-medium">Payment Method</p>
+        {/* Billing Section - Only show if user has paid subscription */}
+        {hasPaidSubscription && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                Billing & Subscription
+              </CardTitle>
+              <CardDescription>
+                Manage your subscription through Whop
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-14 bg-muted rounded flex items-center justify-center">
-                    <CreditCard className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium">•••• •••• •••• 4242</p>
-                    <p className="text-sm text-muted-foreground">Expires 12/25</p>
-                  </div>
+                <div>
+                  <p className="font-medium">Professional Plan</p>
+                  <p className="text-sm text-muted-foreground">
+                    $69.99/month • Billed monthly
+                  </p>
                 </div>
-                <Button variant="outline" size="sm" disabled>
-                  Update
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild
+                >
+                  <a 
+                    href="https://whop.com/hub/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    Manage on Whop
+                  </a>
                 </Button>
               </div>
-            </div>
 
-            <Button variant="destructive" disabled className="w-full sm:w-auto">
-              Cancel Subscription
-            </Button>
-          </CardContent>
-        </Card>
+              <p className="text-sm text-muted-foreground">
+                To update your payment method or cancel your subscription, please visit your Whop dashboard.
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Coming Soon Notice */}
         <Card className="bg-muted/50 border-2 border-dashed">

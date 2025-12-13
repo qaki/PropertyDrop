@@ -33,8 +33,9 @@ export function SubscriptionCard({
 
     setIsLoading(true);
     
-    // Redirect to Whop checkout
-    const checkoutUrl = `https://whop.com/checkout/${checkoutPlanId}`;
+    // Redirect to Whop checkout with success redirect
+    const successUrl = `${window.location.origin}/welcome`;
+    const checkoutUrl = `https://whop.com/checkout/${checkoutPlanId}?success_url=${encodeURIComponent(successUrl)}`;
     window.location.href = checkoutUrl;
   };
 
