@@ -17,7 +17,7 @@ function getEmbedUrl(url: string): string | null {
       let videoId = '';
       
       if (urlObj.hostname.includes('youtu.be')) {
-        videoId = urlObj.pathname.slice(1).split('?')[0];
+        videoId = urlObj.pathname.slice(1).split('?')[0] || '';
       } else {
         videoId = urlObj.searchParams.get('v') || '';
       }
