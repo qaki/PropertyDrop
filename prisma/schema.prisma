@@ -80,26 +80,30 @@ model VerificationToken {
 }
 
 model Job {
-    id               String   @id @default(cuid())
-    name             String
-    agentEmail       String   @map("agent_email")
-    jobAmount        Int      @map("job_amount") // stored in cents
-    isPaid           Boolean  @default(false) @map("is_paid")
-    clientAccessHash String   @unique @default(uuid()) @map("client_access_hash")
-    archivedDate     DateTime? @map("archived_date")
-    
-    createdAt        DateTime @default(now()) @map("created_at")
-    updatedAt        DateTime @updatedAt @map("updated_at")
+  id               String   @id @default(cuid())
+  name             String
+  agentEmail       String   @map("agent_email")
+  jobAmount        Int      @map("job_amount") // stored in cents
+  isPaid           Boolean  @default(false) @map("is_paid")
+  clientAccessHash String   @unique @default(uuid()) @map("client_access_hash")
+  archivedDate     DateTime? @map("archived_date")
+  
+  // Delivery Options (P2.3 & P2.4)
+  deliverySize     String   @default("mls") @map("delivery_size") // mls (1024px), web (1920px), both
+  includeOriginals Boolean  @default(false) @map("include_originals") // Include print-quality originals
+  
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
-    photographer     User     @relation(fields: [photographerId], references: [id], onDelete: Cascade)
-    photographerId   String   @map("photographer_id")
+  photographer     User     @relation(fields: [photographerId], references: [id], onDelete: Cascade)
+  photographerId   String   @map("photographer_id")
 
-    status           String   @default("uploading") // uploading, processing, ready
-    assets           Asset[]
+  status           String   @default("uploading") // uploading, processing, ready
+  assets           Asset[]
 
-    @@map("jobs")
-    @@index([clientAccessHash])
-    @@index([photographerId])
+  @@map("jobs")
+  @@index([clientAccessHash])
+  @@index([photographerId])
 }
 
 model Asset {
