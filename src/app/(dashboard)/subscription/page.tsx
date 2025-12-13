@@ -104,7 +104,7 @@ export default async function SubscriptionPage() {
         {/* Pro Plan Card */}
         <SubscriptionCard
           title="Pro Plan"
-          price="$29"
+          price="$69.99"
           period="per month"
           features={[
             "Everything in Free Trial",
