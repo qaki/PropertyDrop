@@ -7,8 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
-import { Textarea } from "~/components/ui/textarea";
-import { MapPin, Mail, DollarSign, FileText, Phone, User, Loader2, CheckCircle2 } from "lucide-react";
+import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2 } from "lucide-react";
 
 export function CreateJobForm() {
   const router = useRouter();
