@@ -2,7 +2,7 @@
 
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
-import { hash } from "bcrypt";
+import { hash, compare } from "bcryptjs";
 import { revalidatePath } from "next/cache";
 
 export async function updateProfile(formData: FormData) {
@@ -65,8 +65,7 @@ export async function updatePassword(formData: FormData) {
     }
 
     // Verify current password
-    const bcrypt = await import("bcrypt");
-    const isValid = await bcrypt.compare(currentPassword, user.password);
+    const isValid = await compare(currentPassword, user.password);
     
     if (!isValid) {
       return { success: false, error: "Current password is incorrect" };
