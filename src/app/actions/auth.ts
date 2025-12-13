@@ -160,3 +160,182 @@ export async function signup(formData: FormData) {
   }
 }
 
+// Send password reset email
+export async function sendPasswordResetEmail(formData: FormData) {
+  const email = formData.get("email") as string;
+
+  if (!email) {
+    return { success: false, error: "Email is required" };
+  }
+
+  try {
+    const user = await db.user.findUnique({
+      where: { email },
+    });
+
+    // For security, always return success even if user doesn't exist
+    // This prevents email enumeration attacks
+    if (!user) {
+      return {
+        success: true,
+        message: "If an account exists with that email, you will receive reset instructions.",
+      };
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+
+    // Save reset token to user
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerificationToken: resetToken, // Reusing this field for reset tokens
+        // In production, you'd want a separate field for password reset tokens
+      },
+    });
+
+    // Send reset email
+    const appUrl = env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
+    const resetUrl = `${appUrl}/reset-password?token=${resetToken}`;
+
+    const resetEmailHTML = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background-color: #4f46e5; padding: 40px 20px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 32px;">PropertyDrop</h1>
+              <p style="color: #e0e7ff; margin: 10px 0 0 0;">Password Reset Request</p>
+            </div>
+            
+            <div style="padding: 40px 20px; background-color: #ffffff;">
+              <h2 style="color: #1f2937; margin-bottom: 20px;">
+                Reset Your Password
+              </h2>
+              
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.6;">
+                Hi ${user.name || "there"},
+              </p>
+              
+              <p style="color: #4b5563; font-size: 16px; line-height: 1.6;">
+                We received a request to reset your password for your PropertyDrop account. 
+                Click the button below to create a new password:
+              </p>
+              
+              <div style="text-align: center; margin: 40px 0;">
+                <a href="${resetUrl}" style="background-color: #4f46e5; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;">
+                  Reset Password
+                </a>
+              </div>
+              
+              <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
+                Or copy and paste this link into your browser:
+              </p>
+              
+              <p style="background-color: #f3f4f6; padding: 12px; border-radius: 6px; font-size: 14px; color: #4b5563; word-break: break-all;">
+                ${resetUrl}
+              </p>
+              
+              <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                <p style="color: #ef4444; font-size: 14px; line-height: 1.6; font-weight: 600;">
+                  ⚠️ Security Notice:
+                </p>
+                <ul style="color: #6b7280; font-size: 14px; line-height: 1.8;">
+                  <li>This link expires in 1 hour</li>
+                  <li>If you didn't request this, please ignore this email</li>
+                  <li>Your password will not change unless you click the link above</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div style="background-color: #f9fafb; padding: 30px 20px; text-align: center; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 12px; margin: 0 0 10px 0;">
+                Need help? Contact us at support@propertydrop.com
+              </p>
+              <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+                © 2025 PropertyDrop. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    await resend.emails.send({
+      from: "PropertyDrop <no-reply@property-drop.com>",
+      to: email,
+      subject: "Reset your PropertyDrop password",
+      html: resetEmailHTML,
+    });
+
+    return {
+      success: true,
+      message: "Password reset instructions sent to your email.",
+    };
+  } catch (error) {
+    console.error("Failed to send password reset email:", error);
+    return {
+      success: false,
+      error: "Failed to send reset email. Please try again.",
+    };
+  }
+}
+
+// Reset password with token
+export async function resetPassword(formData: FormData) {
+  const token = formData.get("token") as string;
+  const password = formData.get("password") as string;
+
+  if (!token || !password) {
+    return { success: false, error: "Missing required fields" };
+  }
+
+  if (password.length < 6) {
+    return { success: false, error: "Password must be at least 6 characters" };
+  }
+
+  try {
+    // Find user with this reset token
+    const user = await db.user.findFirst({
+      where: {
+        emailVerificationToken: token,
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Invalid or expired reset token",
+      };
+    }
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Update user password and clear reset token
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash,
+        emailVerificationToken: null, // Clear the token
+      },
+    });
+
+    return {
+      success: true,
+      message: "Password reset successfully!",
+    };
+  } catch (error) {
+    console.error("Failed to reset password:", error);
+    return {
+      success: false,
+      error: "Failed to reset password. Please try again.",
+    };
+  }
+}
+

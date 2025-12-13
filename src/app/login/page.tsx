@@ -193,13 +193,6 @@ export default function LoginPage() {
                     </>
                   )}
                 </Button>
-
-                {/* Demo Credentials (Remove in production) */}
-                <div className="bg-muted/50 rounded-lg p-3 text-xs text-muted-foreground">
-                  <p className="font-semibold mb-1">Demo Access:</p>
-                  <p>Email: demo@propertydrop.com</p>
-                  <p>Password: demo123</p>
-                </div>
               </form>
             </CardContent>
             <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 p-6">

@@ -20,8 +20,7 @@ export default async function NewJobPage() {
 
   return (
     <SubscriptionGuard subscriptionInfo={subscriptionInfo}>
-      <div className="container mx-auto max-w-2xl py-10">
-        <h1 className="text-2xl font-bold mb-6">Create New Job</h1>
+      <div className="container mx-auto max-w-3xl py-10 px-4">
         <CreateJobForm />
       </div>
     </SubscriptionGuard>
