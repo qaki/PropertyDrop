@@ -1,13 +1,13 @@
 import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback } from "~/components/ui/avatar";
-import { User, Mail, Lock, CreditCard, Bell, Shield, Wallet } from "lucide-react";
+import { User, CreditCard, Bell, Shield, Wallet } from "lucide-react";
 import { StripeConnectButton } from "./_components/stripe-connect-button";
+import { ProfileForm } from "./_components/profile-form";
+import { PasswordForm } from "./_components/password-form";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -60,38 +60,10 @@ export default async function SettingsPage() {
 
             <Separator />
 
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  defaultValue={session.user.name || ""}
-                  placeholder="Your name"
-                  disabled
-                />
-                <p className="text-xs text-muted-foreground">
-                  This name appears on your client delivery pages
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  defaultValue={session.user.email || ""}
-                  placeholder="your@email.com"
-                  disabled
-                />
-                <p className="text-xs text-muted-foreground">
-                  Used for login and receiving notifications
-                </p>
-              </div>
-
-              <Button disabled className="w-full sm:w-auto">
-                Save Changes
-              </Button>
-            </div>
+            <ProfileForm 
+              defaultName={session.user.name || ""}
+              email={session.user.email || ""}
+            />
           </CardContent>
         </Card>
 
@@ -106,40 +78,8 @@ export default async function SettingsPage() {
               Manage your password and security preferences
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="current-password">Current Password</Label>
-              <Input
-                id="current-password"
-                type="password"
-                placeholder="••••••••"
-                disabled
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="new-password">New Password</Label>
-              <Input
-                id="new-password"
-                type="password"
-                placeholder="••••••••"
-                disabled
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                placeholder="••••••••"
-                disabled
-              />
-            </div>
-
-            <Button disabled className="w-full sm:w-auto">
-              Update Password
-            </Button>
+          <CardContent>
+            <PasswordForm />
           </CardContent>
         </Card>
 

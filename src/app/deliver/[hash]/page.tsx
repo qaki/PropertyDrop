@@ -1,9 +1,9 @@
 import { db } from "~/server/db";
-import { notFound, redirect } from "next/navigation";
-import { createStripeCheckout } from "~/app/actions/stripe";
+import { notFound } from "next/navigation";
 import { AssetGallery } from "./_components/asset-gallery";
 import { DownloadAllButton } from "./_components/download-all-button";
-import { MapPin, Mail, CheckCircle2, Lock, Download, Image as ImageIcon, Shield } from "lucide-react";
+import { PaymentButton } from "./_components/payment-button";
+import { MapPin, Mail, CheckCircle2, Lock, Download, Image as ImageIcon } from "lucide-react";
 
 export default async function DeliveryPage({
   params,
@@ -138,25 +138,7 @@ export default async function DeliveryPage({
                     <div className="text-sm text-indigo-700">One-time payment</div>
                   </div>
 
-                  <form action={async () => {
-                    "use server";
-                    const result = await createStripeCheckout(hash);
-                    if (result.success && result.url) {
-                      redirect(result.url);
-                    }
-                  }} className="pt-4">
-                    <button
-                      type="submit"
-                      className="w-full max-w-md mx-auto bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
-                    >
-                      <Shield className="h-5 w-5" />
-                      Pay Now & Download Photos
-                    </button>
-                  </form>
-
-                  <p className="text-xs text-gray-500 max-w-md mx-auto pt-2">
-                    🔒 Secure payment powered by Stripe • Industry-standard encryption
-                  </p>
+                  <PaymentButton hash={hash} />
                 </div>
               )}
             </div>
