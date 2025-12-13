@@ -10,6 +10,28 @@ const utapi = new UTApi();
 const f = createUploadthing();
 
 export const ourFileRouter = {
+  // Profile photo uploader (single image, no job required)
+  profilePhotoUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(async ({ req }) => {
+      const session = await auth();
+      if (!session?.user) {
+        throw new Error("Unauthorized");
+      }
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Profile photo uploaded:", file.url);
+      
+      // TODO: Save to user.image in database
+      // await db.user.update({
+      //   where: { id: metadata.userId },
+      //   data: { image: file.url },
+      // });
+      
+      return { uploadedBy: metadata.userId };
+    }),
+
+  // Job photo uploader (multiple images, requires jobId)
   imageUploader: f({ image: { maxFileSize: "16MB", maxFileCount: 20 } })
     .input(z.object({ 
       jobId: z.string(),

@@ -12,7 +12,7 @@ export function ProfilePhotoUpload({ onUploadComplete }: { onUploadComplete?: (u
   return (
     <div className="space-y-3">
       <UploadButton
-        endpoint="imageUploader"
+        endpoint="profilePhotoUploader"
         onClientUploadComplete={(res) => {
           setIsUploading(false);
           if (res && res[0]?.url) {
