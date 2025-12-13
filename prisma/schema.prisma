@@ -95,6 +95,10 @@ model Job {
   // Property Description (P3.2)
   description      String?  @db.Text // Property listing description
   
+  // Media Links (P3.3)
+  videoUrl         String?  @map("video_url") // YouTube or Vimeo URL
+  tourUrl          String?  @map("tour_url") // Matterport or other 3D tour URL
+  
   // Delivery Options (P2.3 & P2.4)
   deliverySize     String   @default("mls") @map("delivery_size") // mls (1024px), web (1920px), both
   includeOriginals Boolean  @default(false) @map("include_originals") // Include print-quality originals

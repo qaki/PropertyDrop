@@ -12,6 +12,8 @@ const createJobSchema = z.object({
   deliverySize: z.enum(["mls", "web", "both"]).default("mls"), // P2.3
   includeOriginals: z.boolean().default(false), // P2.3
   description: z.string().optional(), // P3.2
+  videoUrl: z.string().url().optional().or(z.literal("")), // P3.3
+  tourUrl: z.string().url().optional().or(z.literal("")), // P3.3
 });
 
 export async function createJob(formData: FormData) {
@@ -25,6 +27,8 @@ export async function createJob(formData: FormData) {
         deliverySize: formData.get("deliverySize") || "mls",
         includeOriginals: formData.get("includeOriginals") === "true",
         description: formData.get("description") as string | null,
+        videoUrl: formData.get("videoUrl") as string | null,
+        tourUrl: formData.get("tourUrl") as string | null,
     };
 
     const parsed = createJobSchema.safeParse(rawData);
@@ -41,6 +45,8 @@ export async function createJob(formData: FormData) {
                 deliverySize: parsed.data.deliverySize, // P2.3
                 includeOriginals: parsed.data.includeOriginals, // P2.3
                 description: parsed.data.description || null, // P3.2
+                videoUrl: parsed.data.videoUrl || null, // P3.3
+                tourUrl: parsed.data.tourUrl || null, // P3.3
             }
         });
         

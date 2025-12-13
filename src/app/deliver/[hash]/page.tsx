@@ -4,6 +4,7 @@ import { AssetGallery } from "./_components/asset-gallery";
 import { DownloadAllButton } from "./_components/download-all-button";
 import { PaymentButton } from "./_components/payment-button";
 import { CopyDescription } from "./_components/copy-description";
+import { MediaEmbeds } from "./_components/media-embeds";
 import { MapPin, Mail, CheckCircle2, Lock, Download, Image as ImageIcon } from "lucide-react";
 
 export default async function DeliveryPage({
@@ -195,6 +196,9 @@ export default async function DeliveryPage({
         {job.description && (
           <CopyDescription description={job.description} />
         )}
+
+        {/* Media Embeds (P3.3) */}
+        <MediaEmbeds videoUrl={job.videoUrl} tourUrl={job.tourUrl} />
 
         {/* Gallery Section */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">

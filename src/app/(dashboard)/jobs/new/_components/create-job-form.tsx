@@ -9,7 +9,7 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Textarea } from "~/components/ui/textarea";
-import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2, Image as ImageIcon, Download } from "lucide-react";
+import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2, Image as ImageIcon, Download, Video, Box } from "lucide-react";
 
 export function CreateJobForm() {
   const router = useRouter();
@@ -80,6 +80,46 @@ export function CreateJobForm() {
               />
               <p className="text-xs text-muted-foreground">
                 Add a property description that clients can copy for MLS listings (optional)
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="videoUrl" className="flex items-center gap-2">
+                <Video className="h-4 w-4" />
+                Video Tour URL
+              </Label>
+              <div className="relative">
+                <Video className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="videoUrl"
+                  name="videoUrl"
+                  type="url"
+                  placeholder="https://youtube.com/watch?v=..."
+                  className="pl-10"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Add a YouTube or Vimeo video tour link (optional)
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tourUrl" className="flex items-center gap-2">
+                <Box className="h-4 w-4" />
+                3D Tour URL
+              </Label>
+              <div className="relative">
+                <Box className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="tourUrl"
+                  name="tourUrl"
+                  type="url"
+                  placeholder="https://my.matterport.com/show/?m=..."
+                  className="pl-10"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Add a Matterport or other 3D tour link (optional)
               </p>
             </div>
           </div>
