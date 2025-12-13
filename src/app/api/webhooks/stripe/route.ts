@@ -2,6 +2,8 @@ import { stripe } from "~/lib/stripe";
 import { db } from "~/server/db";
 import { env } from "~/env";
 import { headers } from "next/headers";
+import { resend } from "~/lib/resend";
+import { generateClientReceiptEmail, generatePhotographerSalesAlertEmail } from "~/lib/email-templates";
 import type Stripe from "stripe";
 
 /**
@@ -53,9 +55,29 @@ export async function POST(req: Request) {
         // Check if payment was successful
         if (session.payment_status === "paid") {
           const jobId = session.metadata?.jobId;
+          const deliveryHash = session.metadata?.deliveryHash;
 
           if (!jobId) {
             console.error("No jobId in session metadata");
+            break;
+          }
+
+          // Get job details with photographer info and assets
+          const job = await db.job.findUnique({
+            where: { id: jobId },
+            include: {
+              photographer: {
+                select: {
+                  name: true,
+                  email: true,
+                },
+              },
+              assets: true,
+            },
+          });
+
+          if (!job) {
+            console.error(`Job ${jobId} not found`);
             break;
           }
 
@@ -66,6 +88,63 @@ export async function POST(req: Request) {
           });
 
           console.log(`✅ Job ${jobId} marked as paid via Stripe`);
+
+          // Get Stripe hosted receipt URL
+          const paymentIntent = session.payment_intent as string;
+          let receiptUrl = "";
+          try {
+            const pi = await stripe.paymentIntents.retrieve(paymentIntent);
+            if (pi.charges.data[0]?.receipt_url) {
+              receiptUrl = pi.charges.data[0].receipt_url;
+            }
+          } catch (err) {
+            console.error("Failed to get receipt URL:", err);
+          }
+
+          const deliveryUrl = `${env.NEXT_PUBLIC_APP_URL}/deliver/${deliveryHash || job.clientAccessHash}`;
+          const amountFormatted = (job.jobAmount / 100).toFixed(2);
+
+          // 1. Send receipt email to CLIENT
+          try {
+            await resend.emails.send({
+              from: "PropertyDrop <no-reply@property-drop.com>",
+              to: job.agentEmail,
+              subject: `Payment Receipt - ${job.name} Photos`,
+              html: generateClientReceiptEmail({
+                clientEmail: job.agentEmail,
+                jobName: job.name,
+                amount: amountFormatted,
+                photographerName: job.photographer.name || "Your photographer",
+                deliveryUrl,
+                stripeReceiptUrl: receiptUrl || deliveryUrl,
+                photoCount: job.assets.length,
+              }),
+            });
+            console.log(`📧 Receipt email sent to client: ${job.agentEmail}`);
+          } catch (emailError) {
+            console.error("Failed to send client receipt email:", emailError);
+          }
+
+          // 2. Send sales alert to PHOTOGRAPHER
+          try {
+            await resend.emails.send({
+              from: "PropertyDrop <no-reply@property-drop.com>",
+              to: job.photographer.email!,
+              subject: `💰 Payment Received: $${amountFormatted} - ${job.name}`,
+              html: generatePhotographerSalesAlertEmail({
+                photographerName: job.photographer.name || "Photographer",
+                jobName: job.name,
+                clientEmail: job.agentEmail,
+                amount: amountFormatted,
+                photoCount: job.assets.length,
+                jobDashboardUrl: `${env.NEXT_PUBLIC_APP_URL}/jobs/${jobId}`,
+                stripeReceiptUrl: receiptUrl || `${env.NEXT_PUBLIC_APP_URL}/jobs`,
+              }),
+            });
+            console.log(`📧 Sales alert sent to photographer: ${job.photographer.email}`);
+          } catch (emailError) {
+            console.error("Failed to send photographer alert email:", emailError);
+          }
         }
         break;
       }
