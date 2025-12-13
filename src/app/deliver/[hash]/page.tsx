@@ -116,6 +116,8 @@ export default async function DeliveryPage({
                     <DownloadAllButton 
                       assets={assetsWithUrls} 
                       jobName={job.name}
+                      deliverySize={job.deliverySize}
+                      includeOriginals={job.includeOriginals}
                     />
                   </div>
                 </div>

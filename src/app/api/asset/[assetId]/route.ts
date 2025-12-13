@@ -6,6 +6,8 @@ export async function GET(
   { params }: { params: Promise<{ assetId: string }> }
 ) {
   const { assetId } = await params;
+  const { searchParams } = request.nextUrl;
+  const type = searchParams.get("type") || "mls"; // mls, web, or original
 
   try {
     // Fetch asset with job relationship
@@ -26,8 +28,20 @@ export async function GET(
       );
     }
 
-    // If paid, redirect to the actual UploadThing URL
-    const downloadUrl = asset.mlsKey || asset.originalKey;
+    // Determine which version to serve based on type parameter
+    let downloadUrl: string;
+    
+    if (type === "original") {
+      // Always serve the original unprocessed file
+      downloadUrl = asset.originalKey;
+    } else if (type === "web") {
+      // For web, use MLS version if available, otherwise original
+      // TODO: In future, we could process separate web (1920px) versions
+      downloadUrl = asset.mlsKey || asset.originalKey;
+    } else {
+      // Default to MLS version
+      downloadUrl = asset.mlsKey || asset.originalKey;
+    }
     
     // For UploadThing URLs, redirect directly
     if (downloadUrl.startsWith("http")) {
