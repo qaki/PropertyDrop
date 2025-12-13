@@ -93,8 +93,10 @@ export async function POST(req: Request) {
           const paymentIntent = session.payment_intent as string;
           let receiptUrl = "";
           try {
-            const pi = await stripe.paymentIntents.retrieve(paymentIntent);
-            if (pi.charges.data[0]?.receipt_url) {
+            const pi = await stripe.paymentIntents.retrieve(paymentIntent, {
+              expand: ['charges'],
+            });
+            if (pi.charges?.data[0]?.receipt_url) {
               receiptUrl = pi.charges.data[0].receipt_url;
             }
           } catch (err) {
