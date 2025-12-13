@@ -94,10 +94,12 @@ export async function POST(req: Request) {
           let receiptUrl = "";
           try {
             const pi = await stripe.paymentIntents.retrieve(paymentIntent, {
-              expand: ['charges'],
-            });
-            if (pi.charges?.data[0]?.receipt_url) {
-              receiptUrl = pi.charges.data[0].receipt_url;
+              expand: ['latest_charge'],
+            }) as Stripe.PaymentIntent & {
+              latest_charge: Stripe.Charge;
+            };
+            if (pi.latest_charge && typeof pi.latest_charge !== 'string') {
+              receiptUrl = pi.latest_charge.receipt_url || "";
             }
           } catch (err) {
             console.error("Failed to get receipt URL:", err);
