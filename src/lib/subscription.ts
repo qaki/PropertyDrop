@@ -15,6 +15,20 @@ export type SubscriptionInfo = {
 export function checkSubscriptionStatus(user: User): SubscriptionInfo {
   const now = new Date();
   
+  // Handle users created before trial system was implemented
+  // If no trial dates exist but status is "trial", give them a trial starting now
+  if (!user.trialEndDate && (!user.subscriptionStatus || user.subscriptionStatus === "trial" || user.subscriptionStatus === "inactive")) {
+    // Default to 14-day trial for users without trial dates
+    return {
+      isActive: true,
+      isTrial: true,
+      isExpired: false,
+      daysRemaining: 14,
+      status: "trial",
+      trialEndDate: null,
+    };
+  }
+  
   // Check if user is in trial period
   if (user.trialEndDate && user.subscriptionStatus === "trial") {
     const trialEnd = new Date(user.trialEndDate);
