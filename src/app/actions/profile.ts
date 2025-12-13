@@ -57,15 +57,15 @@ export async function updatePassword(formData: FormData) {
     // Get user with password
     const user = await db.user.findUnique({
       where: { id: session.user.id },
-      select: { password: true },
+      select: { passwordHash: true },
     });
 
-    if (!user?.password) {
+    if (!user?.passwordHash) {
       return { success: false, error: "Unable to verify current password" };
     }
 
     // Verify current password
-    const isValid = await compare(currentPassword, user.password);
+    const isValid = await compare(currentPassword, user.passwordHash);
     
     if (!isValid) {
       return { success: false, error: "Current password is incorrect" };
@@ -75,7 +75,7 @@ export async function updatePassword(formData: FormData) {
     const hashedPassword = await hash(newPassword, 10);
     await db.user.update({
       where: { id: session.user.id },
-      data: { password: hashedPassword },
+      data: { passwordHash: hashedPassword },
     });
 
     revalidatePath("/settings");
