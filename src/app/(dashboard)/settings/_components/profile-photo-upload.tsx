@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Loader2, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
-import { UploadButton } from "~/utils/uploadthing";
+import { UploadButton } from "~/lib/uploadthing";
 
 export function ProfilePhotoUpload({ onUploadComplete }: { onUploadComplete?: (url: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
