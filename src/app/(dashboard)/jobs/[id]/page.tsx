@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from "~/components/ui/alert";
 import { UploadManager } from "./_components/upload-manager";
 import { AssetList } from "./_components/asset-list";
 import { CopyLinkButton } from "./_components/copy-link-button";
+import { EditJobModal } from "./_components/edit-job-modal";
 import { ArrowLeft, ExternalLink, CheckCircle2, AlertCircle, Image as ImageIcon, Mail, DollarSign, Share2 } from "lucide-react";
 
 export default async function JobDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -55,17 +56,27 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ id:
             </div>
           </div>
           
-          <Badge
-            variant={job.isPaid ? "default" : "secondary"}
-            className={`text-base px-4 py-2 ${
-              job.isPaid
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-yellow-600 hover:bg-yellow-700"
-            }`}
-          >
-            {job.isPaid ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <AlertCircle className="h-4 w-4 mr-2" />}
-            {job.isPaid ? "PAID" : "AWAITING PAYMENT"}
-          </Badge>
+          <div className="flex items-center gap-3">
+            <EditJobModal 
+              jobId={job.id}
+              currentName={job.name}
+              currentEmail={job.agentEmail}
+              currentAmount={job.jobAmount}
+              isPaid={job.isPaid}
+            />
+            
+            <Badge
+              variant={job.isPaid ? "default" : "secondary"}
+              className={`text-base px-4 py-2 ${
+                job.isPaid
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-yellow-600 hover:bg-yellow-700"
+              }`}
+            >
+              {job.isPaid ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <AlertCircle className="h-4 w-4 mr-2" />}
+              {job.isPaid ? "PAID" : "AWAITING PAYMENT"}
+            </Badge>
+          </div>
         </div>
       </div>
 
