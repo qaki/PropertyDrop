@@ -17,27 +17,36 @@ function getEmbedUrl(url: string): string | null {
       let videoId = '';
       
       if (urlObj.hostname.includes('youtu.be')) {
-        videoId = urlObj.pathname.slice(1);
+        videoId = urlObj.pathname.slice(1).split('?')[0];
       } else {
         videoId = urlObj.searchParams.get('v') || '';
       }
       
       if (videoId) {
-        return `https://www.youtube.com/embed/${videoId}`;
+        // Add necessary parameters for embedding
+        return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
       }
     }
     
     // Vimeo
     if (urlObj.hostname.includes('vimeo.com')) {
-      const videoId = urlObj.pathname.split('/').pop();
+      const videoId = urlObj.pathname.split('/').filter(Boolean).pop();
       if (videoId) {
-        return `https://player.vimeo.com/video/${videoId}`;
+        return `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0`;
       }
     }
     
-    // Matterport
-    if (urlObj.hostname.includes('matterport.com')) {
-      return url.replace('show', 'show') + '&play=1';
+    // Matterport - handle both show and models URLs
+    if (urlObj.hostname.includes('matterport.com') || urlObj.hostname.includes('my.matterport.com')) {
+      // If it's already an embed URL, return as-is
+      if (url.includes('/show/') || url.includes('&play=1')) {
+        return url;
+      }
+      // Convert model URL to embed URL
+      const modelMatch = url.match(/m=([^&]+)/);
+      if (modelMatch) {
+        return `https://my.matterport.com/show/?m=${modelMatch[1]}&play=1&qs=1`;
+      }
     }
     
     // Return original URL if already embeddable or unknown format
