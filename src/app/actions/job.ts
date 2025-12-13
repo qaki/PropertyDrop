@@ -11,6 +11,7 @@ const createJobSchema = z.object({
   jobAmount: z.number().min(1), // in dollars
   deliverySize: z.enum(["mls", "web", "both"]).default("mls"), // P2.3
   includeOriginals: z.boolean().default(false), // P2.3
+  description: z.string().optional(), // P3.2
 });
 
 export async function createJob(formData: FormData) {
@@ -23,6 +24,7 @@ export async function createJob(formData: FormData) {
         jobAmount: Number(formData.get("jobAmount")),
         deliverySize: formData.get("deliverySize") || "mls",
         includeOriginals: formData.get("includeOriginals") === "true",
+        description: formData.get("description") as string | null,
     };
 
     const parsed = createJobSchema.safeParse(rawData);
@@ -38,6 +40,7 @@ export async function createJob(formData: FormData) {
                 status: "uploading",
                 deliverySize: parsed.data.deliverySize, // P2.3
                 includeOriginals: parsed.data.includeOriginals, // P2.3
+                description: parsed.data.description || null, // P3.2
             }
         });
         

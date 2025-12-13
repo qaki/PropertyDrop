@@ -92,6 +92,9 @@ model Job {
   clientAccessHash String   @unique @default(uuid()) @map("client_access_hash")
   archivedDate     DateTime? @map("archived_date")
   
+  // Property Description (P3.2)
+  description      String?  @db.Text // Property listing description
+  
   // Delivery Options (P2.3 & P2.4)
   deliverySize     String   @default("mls") @map("delivery_size") // mls (1024px), web (1920px), both
   includeOriginals Boolean  @default(false) @map("include_originals") // Include print-quality originals

@@ -8,6 +8,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { Textarea } from "~/components/ui/textarea";
 import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2, Image as ImageIcon, Download } from "lucide-react";
 
 export function CreateJobForm() {
@@ -63,6 +64,22 @@ export function CreateJobForm() {
               </div>
               <p className="text-xs text-muted-foreground">
                 Full property address for easy identification
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description" className="flex items-center gap-2">
+                Property Description
+              </Label>
+              <Textarea
+                id="description"
+                name="description"
+                placeholder="Stunning 3-bedroom home with modern updates, chef's kitchen, and beautiful landscaping..."
+                rows={4}
+                className="resize-none"
+              />
+              <p className="text-xs text-muted-foreground">
+                Add a property description that clients can copy for MLS listings (optional)
               </p>
             </div>
           </div>
