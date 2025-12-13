@@ -24,7 +24,7 @@ export default async function AllPhotosPage() {
     where: { photographerId: session.user.id },
     include: {
       assets: {
-        orderBy: { createdAt: 'desc' },
+        orderBy: { order: 'asc' },
       },
     },
     orderBy: { createdAt: 'desc' },

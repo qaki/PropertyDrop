@@ -11,6 +11,7 @@ import { UploadManager } from "./_components/upload-manager";
 import { AssetList } from "./_components/asset-list";
 import { CopyLinkButton } from "./_components/copy-link-button";
 import { EditJobModal } from "./_components/edit-job-modal";
+import { PhotoReorder } from "./_components/photo-reorder";
 import { ArrowLeft, ExternalLink, CheckCircle2, AlertCircle, Image as ImageIcon, Mail, DollarSign, Share2 } from "lucide-react";
 
 export default async function JobDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -20,7 +21,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ id:
 
   const job = await db.job.findUnique({
     where: { id, photographerId: session.user.id },
-    include: { assets: { orderBy: { createdAt: 'desc' } } },
+    include: { assets: { orderBy: { order: 'asc' } } },
   });
 
   if (!job) notFound();
@@ -97,6 +98,15 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ id:
               </CardHeader>
               <CardContent>
                 <AssetList assets={job.assets} />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Photo Reordering */}
+          {job.assets.length > 1 && (
+            <Card>
+              <CardContent className="pt-6">
+                <PhotoReorder jobId={job.id} initialAssets={job.assets} />
               </CardContent>
             </Card>
           )}

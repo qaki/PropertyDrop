@@ -65,3 +65,53 @@ export async function editJob(formData: FormData) {
   }
 }
 
+/**
+ * Update photo order for a job
+ * P2.1 - Drag-and-drop photo reordering
+ */
+export async function updatePhotoOrder(
+  jobId: string,
+  assetIds: string[]
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    // Verify job belongs to user
+    const job = await db.job.findUnique({
+      where: { id: jobId, photographerId: session.user.id },
+      include: { assets: true },
+    });
+
+    if (!job) {
+      return { success: false, error: "Job not found or access denied" };
+    }
+
+    // Verify all asset IDs belong to this job
+    const jobAssetIds = new Set(job.assets.map((a) => a.id));
+    if (!assetIds.every((id) => jobAssetIds.has(id))) {
+      return { success: false, error: "Invalid asset IDs" };
+    }
+
+    // Update order for each asset
+    await Promise.all(
+      assetIds.map((assetId, index) =>
+        db.asset.update({
+          where: { id: assetId },
+          data: { order: index },
+        })
+      )
+    );
+
+    revalidatePath(`/jobs/${jobId}`);
+    revalidatePath(`/deliver/${job.clientAccessHash}`);
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Photo reorder error:", error);
+    return { success: false, error: "Failed to update photo order" };
+  }
+}
+

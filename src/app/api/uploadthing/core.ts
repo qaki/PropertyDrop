@@ -59,6 +59,14 @@ export const ourFileRouter = {
       console.log("File:", file.url, "Name:", file.name);
       
       try {
+          // Get the current max order for this job to assign the next order
+          const maxOrderAsset = await db.asset.findFirst({
+            where: { jobId: metadata.jobId },
+            orderBy: { order: 'desc' },
+            select: { order: true },
+          });
+          const nextOrder = (maxOrderAsset?.order ?? -1) + 1;
+
           // Create asset record in database (NOT processed yet - waiting for "Publish" button)
           const asset = await db.asset.create({
             data: {
@@ -69,9 +77,10 @@ export const ourFileRouter = {
                 isProcessed: false, // Will be true after "Publish" button clicked
                 mimeType: file.type || "image/jpeg",
                 size: file.size,
+                order: nextOrder, // P2.1 - Assign sequential order
             }
           });
-          console.log("--> DB INSERT SUCCESS (staged):", asset.id);
+          console.log("--> DB INSERT SUCCESS (staged):", asset.id, "Order:", nextOrder);
           console.log("--> Waiting for user to click 'Publish' button...");
           
           // ⏸️ NO AUTO-PROCESSING - Wait for user to click "Publish to Delivery Page"

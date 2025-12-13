@@ -118,6 +118,9 @@ model Asset {
     resizeType       String  @default("mls") @map("resize_type") // mls, full, web, custom
     isProcessed      Boolean @default(true) @map("is_processed") // Default true for existing assets
     
+    // Photo ordering (P2.1 - drag-and-drop reordering)
+    order            Int     @default(0) // Display order set by photographer
+    
     width        Int?
     height       Int?
     size         Int?
@@ -127,4 +130,5 @@ model Asset {
     
     @@map("assets")
     @@index([jobId])
+    @@index([jobId, order]) // Compound index for efficient ordered queries
 }

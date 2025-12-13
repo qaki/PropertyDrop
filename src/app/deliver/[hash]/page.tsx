@@ -15,7 +15,7 @@ export default async function DeliveryPage({
   const job = await db.job.findUnique({
     where: { clientAccessHash: hash },
     include: { 
-      assets: true,
+      assets: { orderBy: { order: 'asc' } },
       photographer: {
         select: {
           name: true,
