@@ -50,6 +50,10 @@ model User {
     image                  String?
     passwordHash           String?   @map("password_hash")
 
+    // White-labeling / Branding (P3.1)
+    companyName            String?   @map("company_name")
+    companyLogo            String?   @map("company_logo")
+
     // Stripe Connect for receiving payments
     stripeAccountId        String?   @unique @map("stripe_account_id")
     stripeAccountStatus    String?   @default("pending") @map("stripe_account_status") // pending, complete, restricted

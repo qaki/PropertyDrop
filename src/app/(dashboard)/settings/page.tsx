@@ -4,11 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback } from "~/components/ui/avatar";
-import { User, CreditCard, Bell, Shield, Wallet } from "lucide-react";
+import { User, CreditCard, Bell, Shield, Wallet, Briefcase } from "lucide-react";
 import { StripeConnectButton } from "./_components/stripe-connect-button";
 import { ProfileForm } from "./_components/profile-form";
 import { PasswordForm } from "./_components/password-form";
 import { ProfilePhotoUpload } from "./_components/profile-photo-upload";
+import { BrandingForm } from "./_components/branding-form";
 import { db } from "~/server/db";
 import { checkSubscriptionStatus } from "~/lib/subscription";
 
@@ -68,6 +69,25 @@ export default async function SettingsPage() {
             <ProfileForm 
               defaultName={session.user.name || ""}
               email={session.user.email || ""}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Branding Section (P3.1) */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5" />
+              Company Branding
+            </CardTitle>
+            <CardDescription>
+              Customize how your brand appears on client delivery pages
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <BrandingForm 
+              currentCompanyName={user.companyName}
+              currentCompanyLogo={user.companyLogo}
             />
           </CardContent>
         </Card>

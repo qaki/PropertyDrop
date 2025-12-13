@@ -20,6 +20,8 @@ export default async function DeliveryPage({
         select: {
           name: true,
           email: true,
+          companyName: true,
+          companyLogo: true,
         },
       },
     },
@@ -41,6 +43,10 @@ export default async function DeliveryPage({
   const photoCount = job.assets.length;
   const priceFormatted = (job.jobAmount / 100).toFixed(2);
 
+  // P3.1 - White-labeling: Use photographer's branding if available
+  const displayName = job.photographer.companyName || job.photographer.name || "PropertyDrop";
+  const hasCustomLogo = job.photographer.companyLogo;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Header */}
@@ -48,11 +54,19 @@ export default async function DeliveryPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-indigo-600 flex items-center justify-center">
-                <ImageIcon className="h-6 w-6 text-white" />
-              </div>
+              {hasCustomLogo ? (
+                <img 
+                  src={job.photographer.companyLogo!} 
+                  alt={displayName}
+                  className="h-12 w-12 object-contain rounded"
+                />
+              ) : (
+                <div className="h-12 w-12 rounded-full bg-indigo-600 flex items-center justify-center">
+                  <ImageIcon className="h-6 w-6 text-white" />
+                </div>
+              )}
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">PropertyDrop</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{displayName}</h1>
                 <p className="text-sm text-gray-600">Professional Photo Delivery</p>
               </div>
             </div>
@@ -94,7 +108,7 @@ export default async function DeliveryPage({
               {job.photographer && (
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <p className="text-sm text-gray-600 mb-1">Photographed by</p>
-                  <p className="font-semibold text-gray-900">{job.photographer.name}</p>
+                  <p className="font-semibold text-gray-900">{displayName}</p>
                 </div>
               )}
             </div>

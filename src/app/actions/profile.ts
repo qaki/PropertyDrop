@@ -86,3 +86,39 @@ export async function updatePassword(formData: FormData) {
   }
 }
 
+/**
+ * Update company branding (name and logo URL)
+ * P3.1 - White-labeling
+ */
+export async function updateBranding(formData: FormData) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const companyName = formData.get("companyName") as string;
+    const companyLogo = formData.get("companyLogo") as string;
+
+    // Validate
+    if (!companyName || companyName.trim().length === 0) {
+      return { success: false, error: "Company name is required" };
+    }
+
+    // Update user branding
+    await db.user.update({
+      where: { id: session.user.id },
+      data: {
+        companyName: companyName.trim(),
+        companyLogo: companyLogo || null,
+      },
+    });
+
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (error) {
+    console.error("Update branding error:", error);
+    return { success: false, error: "Failed to update branding" };
+  }
+}
+
