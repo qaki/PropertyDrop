@@ -6,10 +6,21 @@ import { Badge } from "~/components/ui/badge";
 import { Input } from "~/components/ui/input";
 import { Image as ImageIcon, Search, Calendar, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import { checkSubscriptionStatus } from "~/lib/subscription";
+import { SubscriptionGuard } from "../_components/subscription-guard";
 
 export default async function AllPhotosPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
+
+  // Check subscription status
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+  });
+  
+  if (!user) redirect("/");
+  
+  const subscriptionInfo = checkSubscriptionStatus(user);
 
   const jobs = await db.job.findMany({
     where: { photographerId: session.user.id },
@@ -35,7 +46,8 @@ export default async function AllPhotosPage() {
   const totalPaid = jobs.filter(j => j.isPaid).length;
 
   return (
-    <div className="container mx-auto py-8 px-6">
+    <SubscriptionGuard subscriptionInfo={subscriptionInfo}>
+      <div className="container mx-auto py-8 px-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight mb-2">All Photos</h1>
@@ -148,6 +160,7 @@ export default async function AllPhotosPage() {
         </div>
       )}
     </div>
+    </SubscriptionGuard>
   );
 }
 

@@ -6,10 +6,21 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Plus, ExternalLink, Calendar, Mail, DollarSign, Image as ImageIcon, TrendingUp, Clock, CheckCircle2 } from "lucide-react";
+import { checkSubscriptionStatus } from "~/lib/subscription";
+import { SubscriptionGuard } from "../_components/subscription-guard";
 
 export default async function JobsDashboard() {
   const session = await auth();
   if (!session?.user) redirect("/");
+
+  // Check subscription status
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+  });
+  
+  if (!user) redirect("/");
+  
+  const subscriptionInfo = checkSubscriptionStatus(user);
 
   const jobs = await db.job.findMany({
     where: { photographerId: session.user.id },
@@ -39,7 +50,8 @@ export default async function JobsDashboard() {
   const conversionRate = totalJobs > 0 ? Math.round((paidJobs / totalJobs) * 100) : 0;
 
   return (
-    <div className="container mx-auto py-8 px-6">
+    <SubscriptionGuard subscriptionInfo={subscriptionInfo}>
+      <div className="container mx-auto py-8 px-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
@@ -211,6 +223,7 @@ export default async function JobsDashboard() {
         )}
       </div>
     </div>
+    </SubscriptionGuard>
   );
 }
 

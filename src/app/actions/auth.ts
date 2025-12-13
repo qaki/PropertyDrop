@@ -112,7 +112,12 @@ export async function signup(formData: FormData) {
   // Generate unique verification token
   const verificationToken = crypto.randomBytes(32).toString("hex");
 
-  // Create user with unverified email
+  // Calculate trial period (14 days from now)
+  const trialStartDate = new Date();
+  const trialEndDate = new Date();
+  trialEndDate.setDate(trialEndDate.getDate() + 14);
+
+  // Create user with unverified email and trial period
   const user = await db.user.create({
     data: {
       email: parsed.data.email,
@@ -120,6 +125,9 @@ export async function signup(formData: FormData) {
       passwordHash,
       emailVerificationToken: verificationToken,
       emailVerified: null, // Not verified yet
+      trialStartDate,
+      trialEndDate,
+      subscriptionStatus: "trial", // Start as trial
     },
   });
 

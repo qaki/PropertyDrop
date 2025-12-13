@@ -1,10 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "~/server/auth";
+import { db } from "~/server/db";
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback } from "~/components/ui/avatar";
 import { Separator } from "~/components/ui/separator";
-import { LayoutDashboard, Image as ImageIcon, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Image as ImageIcon, Settings, LogOut, CreditCard } from "lucide-react";
+import { checkSubscriptionStatus, getSubscriptionMessage } from "~/lib/subscription";
+import { TrialBanner } from "./_components/trial-banner";
 
 async function signOut() {
   "use server";
@@ -23,6 +26,17 @@ export default async function DashboardLayout({
   if (!session?.user) {
     redirect("/");
   }
+
+  // Fetch user with subscription info
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const subscriptionInfo = checkSubscriptionStatus(user);
 
   const userInitials = session.user.name
     ?.split(" ")
@@ -63,6 +77,16 @@ export default async function DashboardLayout({
             >
               <ImageIcon className="h-5 w-5" />
               <span>All Photos</span>
+            </Button>
+          </Link>
+
+          <Link href="/subscription">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 hover:bg-sidebar-accent"
+            >
+              <CreditCard className="h-5 w-5" />
+              <span>Subscription</span>
             </Button>
           </Link>
 
@@ -113,6 +137,9 @@ export default async function DashboardLayout({
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
+        {/* Trial Banner */}
+        <TrialBanner subscriptionInfo={subscriptionInfo} />
+        
         {children}
       </main>
     </div>

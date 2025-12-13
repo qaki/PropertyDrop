@@ -54,9 +54,13 @@ model User {
     stripeAccountId        String?   @unique @map("stripe_account_id")
     stripeAccountStatus    String?   @default("pending") @map("stripe_account_status") // pending, complete, restricted
 
+    // Trial Period (14 days free)
+    trialStartDate         DateTime? @map("trial_start_date")
+    trialEndDate           DateTime? @map("trial_end_date")
+
     // Whop Subscription (Photographer pays PropertyDrop)
     whopMembershipId       String?   @unique @map("whop_membership_id")
-    subscriptionStatus     String?   @default("inactive") @map("subscription_status") // active, inactive, cancelled
+    subscriptionStatus     String?   @default("trial") @map("subscription_status") // trial, active, inactive, cancelled, expired
     subscriptionExpiresAt  DateTime? @map("subscription_expires_at")
 
     accounts      Account[]
