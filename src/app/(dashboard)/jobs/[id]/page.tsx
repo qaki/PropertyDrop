@@ -218,9 +218,12 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ id:
               <p className="text-muted-foreground">
                 Photos are automatically resized to MLS standards (≤1280px) and compressed.
               </p>
-              <Button variant="link" className="h-auto p-0 text-primary">
-                View Documentation →
-              </Button>
+              <a 
+                href="mailto:support@property-drop.com" 
+                className="inline-flex items-center text-sm text-primary hover:underline"
+              >
+                Contact Support →
+              </a>
             </CardContent>
           </Card>
         </div>
