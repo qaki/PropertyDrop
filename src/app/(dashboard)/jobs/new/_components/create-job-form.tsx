@@ -7,12 +7,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
-import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2 } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { MapPin, Mail, DollarSign, FileText, User, Loader2, CheckCircle2, Image as ImageIcon, Download } from "lucide-react";
 
 export function CreateJobForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [deliverySize, setDeliverySize] = useState("mls");
+  const [includeOriginals, setIncludeOriginals] = useState(false);
 
   async function onSubmit(formData: FormData) {
     setLoading(true);
@@ -120,6 +123,79 @@ export function CreateJobForm() {
               <p className="text-xs text-muted-foreground">
                 Total amount the client will pay to unlock the photos
               </p>
+            </div>
+          </div>
+
+          {/* Delivery Options Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+              <ImageIcon className="h-4 w-4" />
+              Delivery Options
+            </div>
+
+            {/* Delivery Size Selector */}
+            <div className="space-y-3">
+              <Label className="flex items-center gap-2">
+                Photo Size for Delivery <span className="text-red-500">*</span>
+              </Label>
+              <input type="hidden" name="deliverySize" value={deliverySize} />
+              <RadioGroup value={deliverySize} onValueChange={setDeliverySize}>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 rounded-lg border p-3 hover:bg-muted/50 cursor-pointer">
+                    <RadioGroupItem value="mls" id="mls" />
+                    <Label htmlFor="mls" className="flex-1 cursor-pointer">
+                      <div className="font-medium">MLS Optimized (1024px)</div>
+                      <div className="text-xs text-muted-foreground">
+                        Perfect for MLS listings - smaller file size, faster uploads
+                      </div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 rounded-lg border p-3 hover:bg-muted/50 cursor-pointer">
+                    <RadioGroupItem value="web" id="web" />
+                    <Label htmlFor="web" className="flex-1 cursor-pointer">
+                      <div className="font-medium">Web Quality (1920px)</div>
+                      <div className="text-xs text-muted-foreground">
+                        High-quality for websites and social media
+                      </div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 rounded-lg border p-3 hover:bg-muted/50 cursor-pointer">
+                    <RadioGroupItem value="both" id="both" />
+                    <Label htmlFor="both" className="flex-1 cursor-pointer">
+                      <div className="font-medium">Both Sizes</div>
+                      <div className="text-xs text-muted-foreground">
+                        Provide both MLS and Web versions (larger delivery)
+                      </div>
+                    </Label>
+                  </div>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Include Originals Toggle */}
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2 rounded-lg border p-4 hover:bg-muted/50">
+                <input
+                  type="checkbox"
+                  id="includeOriginals"
+                  name="includeOriginals"
+                  checked={includeOriginals}
+                  onChange={(e) => setIncludeOriginals(e.target.checked)}
+                  value={includeOriginals ? "true" : "false"}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <Label htmlFor="includeOriginals" className="flex-1 cursor-pointer">
+                  <div className="flex items-center gap-2 font-medium">
+                    <Download className="h-4 w-4" />
+                    Include Original Print Files
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Add full-resolution, uncompressed originals for print use (larger files)
+                  </div>
+                </Label>
+              </div>
             </div>
           </div>
 
