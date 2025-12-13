@@ -129,7 +129,7 @@ export async function signup(formData: FormData) {
 
   try {
     await resend.emails.send({
-      from: "PropertyDrop <onboarding@resend.dev>", // Change this to your verified domain
+      from: "PropertyDrop <no-reply@property-drop.com>",
       to: parsed.data.email,
       subject: "Verify your PropertyDrop account",
       html: generateVerificationEmailHTML(parsed.data.name, verificationUrl),
