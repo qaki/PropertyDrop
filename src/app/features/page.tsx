@@ -138,8 +138,8 @@ export default function FeaturesPage() {
     },
   ];
 
-  const getColorClasses = (color: string) => {
-    const colors: Record<string, { bg: string; icon: string }> = {
+  const getColorClasses = (color: string): { bg: string; icon: string } => {
+    const colorMap: Record<string, { bg: string; icon: string }> = {
       primary: { bg: "bg-primary/10", icon: "text-primary" },
       blue: { bg: "bg-blue-100", icon: "text-blue-600" },
       green: { bg: "bg-green-100", icon: "text-green-600" },
@@ -147,7 +147,7 @@ export default function FeaturesPage() {
       purple: { bg: "bg-purple-100", icon: "text-purple-600" },
       indigo: { bg: "bg-indigo-100", icon: "text-indigo-600" },
     };
-    return colors[color] || colors.primary;
+    return colorMap[color] ?? { bg: "bg-primary/10", icon: "text-primary" };
   };
 
   return (
