@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { CheckIcon } from "lucide-react";
+import { CheckCircle2, Sparkles, ArrowRight, Loader2, Crown } from "lucide-react";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Button } from "~/components/ui/button";
+import { Badge } from "~/components/ui/badge";
 
 interface SubscriptionCardProps {
   title: string;
@@ -40,50 +43,83 @@ export function SubscriptionCard({
   };
 
   return (
-    <div
-      className={`rounded-lg border-2 p-6 ${
+    <Card
+      className={`relative overflow-hidden transition-all duration-300 ${
         isPro
-          ? "border-indigo-600 bg-indigo-50"
-          : "border-gray-200 bg-white"
-      }`}
+          ? "border-2 border-primary shadow-xl"
+          : "border-2 hover:border-primary/30"
+      } ${isCurrentPlan ? "ring-2 ring-green-500 ring-offset-2" : ""}`}
     >
-      <div className="mb-4">
-        <h3 className="text-2xl font-bold">{title}</h3>
-        <div className="mt-2 flex items-baseline">
-          <span className="text-4xl font-bold">{price}</span>
-          <span className="ml-2 text-gray-600">/{period}</span>
-        </div>
-      </div>
-
-      <ul className="mb-6 space-y-3">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <CheckIcon className="mr-2 h-5 w-5 flex-shrink-0 text-green-500" />
-            <span className="text-gray-700">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        onClick={handleUpgrade}
-        disabled={buttonDisabled || isLoading}
-        className={`w-full rounded-lg px-4 py-3 font-semibold transition-colors ${
-          buttonDisabled
-            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-            : isPro
-            ? "bg-indigo-600 text-white hover:bg-indigo-700"
-            : "bg-gray-600 text-white hover:bg-gray-700"
-        }`}
-      >
-        {isLoading ? "Redirecting..." : buttonText}
-      </button>
-
-      {isCurrentPlan && (
-        <p className="mt-2 text-center text-sm text-gray-600">
-          This is your current plan
-        </p>
+      {/* Popular badge */}
+      {isPro && (
+        <div className="absolute top-0 left-0 right-0 h-1.5 gradient-primary" />
       )}
-    </div>
+      
+      <CardHeader className="text-center pb-4 pt-8">
+        {isPro && (
+          <Badge className="w-fit mx-auto mb-4 bg-primary/10 text-primary border-primary/20 px-4 py-1.5 font-semibold">
+            <Crown className="h-3.5 w-3.5 mr-1.5" />
+            RECOMMENDED
+          </Badge>
+        )}
+        
+        <h3 className="text-2xl font-bold">{title}</h3>
+        
+        <div className="mt-4 flex items-baseline justify-center">
+          <span className={`text-5xl font-extrabold tracking-tight ${isPro ? "text-gradient" : ""}`}>
+            {price}
+          </span>
+          <span className="ml-2 text-muted-foreground font-medium">/{period}</span>
+        </div>
+      </CardHeader>
+
+      <CardContent className="pb-8">
+        <ul className="mb-8 space-y-4">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-start gap-3">
+              <CheckCircle2 className={`h-5 w-5 flex-shrink-0 mt-0.5 ${isPro ? "text-primary" : "text-green-500"}`} />
+              <span className="text-gray-700">{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <Button
+          onClick={handleUpgrade}
+          disabled={buttonDisabled || isLoading}
+          className={`w-full h-12 text-base font-semibold transition-all ${
+            isPro && !buttonDisabled
+              ? "shadow-lg glow-primary hover:scale-105"
+              : ""
+          }`}
+          variant={buttonDisabled ? "secondary" : isPro ? "default" : "outline"}
+          size="lg"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Redirecting...
+            </>
+          ) : buttonDisabled ? (
+            <>
+              <CheckCircle2 className="mr-2 h-5 w-5" />
+              {buttonText}
+            </>
+          ) : (
+            <>
+              <Sparkles className="mr-2 h-5 w-5" />
+              {buttonText}
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </>
+          )}
+        </Button>
+
+        {isCurrentPlan && (
+          <p className="mt-4 text-center text-sm text-muted-foreground flex items-center justify-center gap-1.5">
+            <CheckCircle2 className="h-4 w-4 text-green-500" />
+            This is your current plan
+          </p>
+        )}
+      </CardContent>
+    </Card>
   );
 }
-

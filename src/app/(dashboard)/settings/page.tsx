@@ -3,8 +3,12 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
-import { Avatar, AvatarFallback } from "~/components/ui/avatar";
-import { User, CreditCard, Bell, Shield, Wallet, Briefcase } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Badge } from "~/components/ui/badge";
+import { 
+  User, CreditCard, Bell, Shield, Wallet, Briefcase, 
+  CheckCircle2, Mail, ExternalLink, Settings as SettingsIcon
+} from "lucide-react";
 import { StripeConnectButton } from "./_components/stripe-connect-button";
 import { ProfileForm } from "./_components/profile-form";
 import { PasswordForm } from "./_components/password-form";
@@ -36,18 +40,25 @@ export default async function SettingsPage() {
     <div className="container mx-auto py-8 px-6 max-w-4xl">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold tracking-tight mb-2">Settings</h1>
-        <p className="text-muted-foreground">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
+            <SettingsIcon className="h-5 w-5 text-white" />
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
+        </div>
+        <p className="text-muted-foreground text-lg">
           Manage your account settings and preferences
         </p>
       </div>
 
       <div className="space-y-6">
         {/* Profile Section */}
-        <Card>
+        <Card className="border-2 card-hover">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
+              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <User className="h-4 w-4 text-primary" />
+              </div>
               Profile Information
             </CardTitle>
             <CardDescription>
@@ -56,8 +67,9 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center gap-6">
-              <Avatar className="h-20 w-20">
-                <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
+              <Avatar className="h-20 w-20 border-4 border-primary/20 shadow-lg">
+                {session.user.image && <AvatarImage src={session.user.image} />}
+                <AvatarFallback className="gradient-primary text-white text-2xl font-bold">
                   {userInitials}
                 </AvatarFallback>
               </Avatar>
@@ -73,16 +85,23 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Branding Section (P3.1) */}
-        <Card>
+        {/* Branding Section */}
+        <Card className="border-2 card-hover">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Briefcase className="h-5 w-5" />
-              Company Branding
-            </CardTitle>
-            <CardDescription>
-              Customize how your brand appears on client delivery pages
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <Briefcase className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <CardTitle>Company Branding</CardTitle>
+                  <CardDescription className="mt-1">
+                    Customize how your brand appears on client delivery pages
+                  </CardDescription>
+                </div>
+              </div>
+              <Badge className="bg-purple-100 text-purple-700 border-purple-200">Pro Feature</Badge>
+            </div>
           </CardHeader>
           <CardContent>
             <BrandingForm 
@@ -93,10 +112,12 @@ export default async function SettingsPage() {
         </Card>
 
         {/* Security Section */}
-        <Card>
+        <Card className="border-2 card-hover">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
+              <div className="h-8 w-8 rounded-lg bg-green-100 flex items-center justify-center">
+                <Shield className="h-4 w-4 text-green-600" />
+              </div>
               Security
             </CardTitle>
             <CardDescription>
@@ -108,69 +129,17 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Notifications Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell className="h-5 w-5" />
-              Notifications
-            </CardTitle>
-            <CardDescription>
-              Choose what emails you want to receive
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Payment Notifications</p>
-                <p className="text-sm text-muted-foreground">
-                  Get notified when a client pays for photos
-                </p>
-              </div>
-              <Button variant="outline" size="sm" disabled>
-                Enabled
-              </Button>
-            </div>
-
-            <Separator />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Upload Notifications</p>
-                <p className="text-sm text-muted-foreground">
-                  Get notified when photo processing is complete
-                </p>
-              </div>
-              <Button variant="outline" size="sm" disabled>
-                Enabled
-              </Button>
-            </div>
-
-            <Separator />
-
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Marketing Emails</p>
-                <p className="text-sm text-muted-foreground">
-                  Receive tips, updates, and special offers
-                </p>
-              </div>
-              <Button variant="outline" size="sm" disabled>
-                Disabled
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Payment Settings Section */}
-        <Card>
+        <Card className="border-2 card-hover">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Wallet className="h-5 w-5" />
+              <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                <Wallet className="h-4 w-4 text-amber-600" />
+              </div>
               Payment Settings
             </CardTitle>
             <CardDescription>
-              Connect your payment account to receive money from clients
+              Connect your Stripe account to receive payments from clients
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -178,12 +147,61 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
+        {/* Notifications Section */}
+        <Card className="border-2 card-hover">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                <Bell className="h-4 w-4 text-blue-600" />
+              </div>
+              Notifications
+            </CardTitle>
+            <CardDescription>
+              Choose what emails you want to receive
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {[
+              { title: "Payment Notifications", desc: "Get notified when a client pays for photos", enabled: true },
+              { title: "Upload Notifications", desc: "Get notified when photo processing is complete", enabled: true },
+              { title: "Marketing Emails", desc: "Receive tips, updates, and special offers", enabled: false },
+            ].map((notification) => (
+              <div key={notification.title}>
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">{notification.title}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {notification.desc}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge 
+                    variant={notification.enabled ? "default" : "secondary"}
+                    className={notification.enabled ? "bg-green-100 text-green-700" : ""}
+                  >
+                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                    {notification.enabled ? "Enabled" : "Disabled"}
+                  </Badge>
+                </div>
+                <Separator className="mt-2" />
+              </div>
+            ))}
+            <p className="text-xs text-muted-foreground pt-2">
+              Notification preferences will be customizable in a future update.
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Billing Section - Only show if user has paid subscription */}
         {hasPaidSubscription && (
-          <Card>
+          <Card className="border-2 card-hover">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
+                <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                  <CreditCard className="h-4 w-4 text-indigo-600" />
+                </div>
                 Billing & Subscription
               </CardTitle>
               <CardDescription>
@@ -191,9 +209,12 @@ export default async function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center justify-between p-4 border-2 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5">
                 <div>
-                  <p className="font-medium">Professional Plan</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-semibold text-lg">Professional Plan</p>
+                    <Badge className="bg-green-100 text-green-700 border-green-200">Active</Badge>
+                  </div>
                   <p className="text-sm text-muted-foreground">
                     $69.99/month • Billed monthly
                   </p>
@@ -201,6 +222,7 @@ export default async function SettingsPage() {
                 <Button 
                   variant="outline" 
                   size="sm" 
+                  className="font-medium"
                   asChild
                 >
                   <a 
@@ -208,7 +230,8 @@ export default async function SettingsPage() {
                     target="_blank" 
                     rel="noopener noreferrer"
                   >
-                    Manage on Whop
+                    Manage
+                    <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
                   </a>
                 </Button>
               </div>
@@ -219,17 +242,7 @@ export default async function SettingsPage() {
             </CardContent>
           </Card>
         )}
-
-        {/* Coming Soon Notice */}
-        <Card className="bg-muted/50 border-2 border-dashed">
-          <CardContent className="py-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              🚧 Some settings features are coming soon! You'll be able to fully customize your profile, notifications, and billing preferences.
-            </p>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
 }
-
