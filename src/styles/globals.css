@@ -408,7 +408,14 @@ textarea[data-slot="textarea"]:focus {
 
 /* Image loading shimmer */
 .img-loading {
-  @apply shimmer;
+  background: linear-gradient(
+    90deg,
+    oklch(0.96 0.01 275) 0%,
+    oklch(0.98 0.005 275) 50%,
+    oklch(0.96 0.01 275) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
   aspect-ratio: 4/3;
 }
 
