@@ -53,17 +53,17 @@ export default async function JobsDashboard() {
 
   return (
     <SubscriptionGuard subscriptionInfo={subscriptionInfo}>
-      <div className="container mx-auto py-8 px-6 max-w-7xl">
+      <div className="container mx-auto py-6 sm:py-8 px-4 sm:px-6 max-w-7xl">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight mb-1">My Jobs</h1>
-            <p className="text-muted-foreground text-lg">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-1">My Jobs</h1>
+            <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
               Manage your photo delivery jobs and track payments
             </p>
           </div>
-          <Link href="/jobs/new">
-            <Button size="lg" className="gap-2 shadow-lg glow-primary font-semibold">
+          <Link href="/jobs/new" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto gap-2 shadow-lg glow-primary font-semibold">
               <Plus className="h-5 w-5" />
               Create New Job
             </Button>
@@ -71,23 +71,23 @@ export default async function JobsDashboard() {
         </div>
 
         {/* Dashboard Analytics */}
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10">
           {/* Total Revenue Earned */}
           <Card className="border-2 border-green-200/80 bg-gradient-to-br from-green-50 to-emerald-50/50 card-hover overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-green-200/30 rounded-full blur-2xl" />
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-green-700 font-medium">Total Revenue Earned</CardDescription>
-                <div className="h-12 w-12 rounded-xl bg-green-600 flex items-center justify-center shadow-lg">
-                  <CheckCircle2 className="h-6 w-6 text-white" />
+                <CardDescription className="text-green-700 font-medium text-sm">Total Revenue</CardDescription>
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-green-600 flex items-center justify-center shadow-lg">
+                  <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
               </div>
-              <CardTitle className="text-4xl font-bold text-green-700">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-700">
                 ${(totalRevenue / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-2 text-sm text-green-600 font-medium">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-green-600 font-medium">
                 <TrendingUp className="h-4 w-4" />
                 {paidJobs} of {totalJobs} jobs paid ({conversionRate}%)
               </div>
@@ -99,17 +99,17 @@ export default async function JobsDashboard() {
             <div className="absolute top-0 right-0 w-24 h-24 bg-amber-200/30 rounded-full blur-2xl" />
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-amber-700 font-medium">Pending Revenue</CardDescription>
-                <div className="h-12 w-12 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg">
-                  <Clock className="h-6 w-6 text-white" />
+                <CardDescription className="text-amber-700 font-medium text-sm">Pending Revenue</CardDescription>
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg">
+                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
               </div>
-              <CardTitle className="text-4xl font-bold text-amber-700">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-700">
                 ${(pendingRevenue / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-2 text-sm text-amber-600 font-medium">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-amber-600 font-medium">
                 <Mail className="h-4 w-4" />
                 {totalJobs - paidJobs} awaiting payment
               </div>
@@ -117,21 +117,21 @@ export default async function JobsDashboard() {
           </Card>
 
           {/* Total Assets Delivered */}
-          <Card className="border-2 border-blue-200/80 bg-gradient-to-br from-blue-50 to-indigo-50/50 card-hover overflow-hidden relative">
+          <Card className="border-2 border-blue-200/80 bg-gradient-to-br from-blue-50 to-indigo-50/50 card-hover overflow-hidden relative sm:col-span-2 lg:col-span-1">
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-200/30 rounded-full blur-2xl" />
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-blue-700 font-medium">Photos Delivered</CardDescription>
-                <div className="h-12 w-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg">
-                  <ImageIcon className="h-6 w-6 text-white" />
+                <CardDescription className="text-blue-700 font-medium text-sm">Photos Delivered</CardDescription>
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg">
+                  <ImageIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
               </div>
-              <CardTitle className="text-4xl font-bold text-blue-700">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-700">
                 {totalAssetsDelivered.toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-600 font-medium">
                 <CheckCircle2 className="h-4 w-4" />
                 Processed and ready
               </div>
@@ -140,27 +140,27 @@ export default async function JobsDashboard() {
         </div>
 
         {/* Jobs Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">All Jobs</h2>
-          <Badge variant="secondary" className="font-medium">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold">All Jobs</h2>
+          <Badge variant="secondary" className="font-medium text-xs sm:text-sm">
             {jobs.length} total
           </Badge>
         </div>
 
         {/* Jobs Grid */}
-        <div className="grid gap-5">
+        <div className="grid gap-4 sm:gap-5">
           {jobs.length === 0 ? (
             <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5">
-              <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="h-20 w-20 rounded-2xl gradient-primary flex items-center justify-center mb-6 shadow-xl glow-primary animate-float">
-                  <Camera className="h-10 w-10 text-white" />
+              <CardContent className="flex flex-col items-center justify-center py-12 sm:py-20 text-center px-4">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl gradient-primary flex items-center justify-center mb-4 sm:mb-6 shadow-xl glow-primary animate-float">
+                  <Camera className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">No jobs yet</h3>
-                <p className="text-muted-foreground mb-8 max-w-md text-lg">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">No jobs yet</h3>
+                <p className="text-muted-foreground mb-6 sm:mb-8 max-w-md text-sm sm:text-lg">
                   Get started by creating your first job. Upload photos and share the delivery link with your clients.
                 </p>
-                <Link href="/jobs/new">
-                  <Button size="lg" className="gap-2 shadow-lg glow-primary font-semibold">
+                <Link href="/jobs/new" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 shadow-lg glow-primary font-semibold">
                     <Sparkles className="h-5 w-5" />
                     Create Your First Job
                   </Button>
@@ -170,13 +170,13 @@ export default async function JobsDashboard() {
           ) : (
             jobs.map((job) => (
               <Card key={job.id} className="card-hover border-2 hover:border-primary/30 transition-all duration-300 group">
-                <CardHeader className="pb-4">
-                  <div className="flex justify-between items-start gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
-                        <CardTitle className="text-2xl truncate">{job.name}</CardTitle>
+                <CardHeader className="pb-4 px-4 sm:px-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
+                    <div className="flex-1 min-w-0 w-full">
+                      <div className="flex flex-wrap items-start sm:items-center gap-2 sm:gap-3 mb-2">
+                        <CardTitle className="text-lg sm:text-xl lg:text-2xl break-words">{job.name}</CardTitle>
                         <Badge
-                          className={`flex-shrink-0 font-semibold ${
+                          className={`flex-shrink-0 font-semibold text-xs ${
                             job.isPaid
                               ? "bg-green-100 text-green-700 border-green-200"
                               : "bg-amber-100 text-amber-700 border-amber-200"
@@ -184,24 +184,24 @@ export default async function JobsDashboard() {
                         >
                           {job.isPaid ? (
                             <>
-                              <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
+                              <CheckCircle2 className="h-3 w-3 mr-1" />
                               PAID
                             </>
                           ) : (
                             <>
-                              <Clock className="h-3.5 w-3.5 mr-1" />
+                              <Clock className="h-3 w-3 mr-1" />
                               UNPAID
                             </>
                           )}
                         </Badge>
                       </div>
-                      <CardDescription className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                      <CardDescription className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1 text-xs sm:text-sm">
                         <span className="flex items-center gap-1.5">
-                          <Mail className="h-4 w-4 text-muted-foreground" />
-                          {job.agentEmail}
+                          <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+                          <span className="truncate max-w-[150px] sm:max-w-none">{job.agentEmail}</span>
                         </span>
                         <span className="flex items-center gap-1.5">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                           {job.createdAt.toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
@@ -209,51 +209,54 @@ export default async function JobsDashboard() {
                           })}
                         </span>
                         <span className="flex items-center gap-1.5">
-                          <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                          <ImageIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                           {job.assets.length} photo{job.assets.length !== 1 ? "s" : ""}
                         </span>
                       </CardDescription>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="flex items-center gap-1 text-2xl font-bold">
-                        <DollarSign className="h-6 w-6 text-muted-foreground" />
-                        {(job.jobAmount / 100).toFixed(2)}
-                      </div>
+                    <div className="flex items-center gap-1 text-xl sm:text-2xl font-bold self-start sm:self-auto">
+                      <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                      {(job.jobAmount / 100).toFixed(2)}
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-4 sm:px-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t">
-                    <div className="flex items-center gap-3">
+                    {/* Photo thumbnails - hidden on very small screens */}
+                    <div className="hidden xs:flex items-center gap-3">
                       {job.assets.slice(0, 4).map((asset, i) => (
                         <div
                           key={asset.id}
-                          className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden"
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden"
                           style={{ marginLeft: i > 0 ? '-8px' : '0' }}
                         >
-                          <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                          <ImageIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
                         </div>
                       ))}
                       {job.assets.length > 4 && (
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary" style={{ marginLeft: '-8px' }}>
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center text-xs sm:text-sm font-semibold text-primary" style={{ marginLeft: '-8px' }}>
                           +{job.assets.length - 4}
                         </div>
                       )}
                     </div>
-                    <div className="flex gap-3">
-                      <Link href={`/jobs/${job.id}`}>
-                        <Button variant="outline" size="sm" className="font-medium group-hover:border-primary/50 transition-colors">
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+                      <Link href={`/jobs/${job.id}`} className="flex-1 sm:flex-none">
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto font-medium group-hover:border-primary/50 transition-colors text-xs sm:text-sm">
                           View Details
-                          <ArrowUpRight className="h-4 w-4 ml-1.5 opacity-70" />
+                          <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-1 sm:ml-1.5 opacity-70" />
                         </Button>
                       </Link>
                       <Link
                         href={`/deliver/${job.clientAccessHash}`}
                         target="_blank"
+                        className="flex-1 sm:flex-none"
                       >
-                        <Button variant="default" size="sm" className="gap-2 font-medium shadow-sm">
-                          <ExternalLink className="h-4 w-4" />
-                          Delivery Page
+                        <Button variant="default" size="sm" className="w-full sm:w-auto gap-1.5 sm:gap-2 font-medium shadow-sm text-xs sm:text-sm">
+                          <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          <span className="hidden sm:inline">Delivery Page</span>
+                          <span className="sm:hidden">Deliver</span>
                         </Button>
                       </Link>
                     </div>

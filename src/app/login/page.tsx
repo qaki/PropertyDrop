@@ -48,47 +48,47 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex bg-background">
       {/* Left Side - Premium Branding Panel */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-primary text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 gradient-primary text-white p-8 xl:p-12 flex-col justify-between relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 pattern-dots opacity-10" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
         
         <div className="relative">
-          <Link href="/" className="flex items-center gap-2.5 mb-16">
+          <Link href="/" className="flex items-center gap-2.5 mb-12 xl:mb-16">
             <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center shadow-lg backdrop-blur">
               <Camera className="h-6 w-6 text-white" />
             </div>
-            <span className="text-3xl font-bold tracking-tight">
+            <span className="text-2xl xl:text-3xl font-bold tracking-tight">
               PropertyDrop
             </span>
           </Link>
           
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl xl:text-5xl font-bold mb-4 xl:mb-6 leading-tight">
             Welcome back!
           </h1>
           
-          <p className="text-xl text-white/90 mb-12 leading-relaxed max-w-md">
+          <p className="text-lg xl:text-xl text-white/90 mb-8 xl:mb-12 leading-relaxed max-w-md">
             Sign in to manage your photo delivery jobs and track payments.
           </p>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4 mb-12">
+          <div className="grid grid-cols-2 gap-3 xl:gap-4 mb-8 xl:mb-12">
             {[
               { value: "500+", label: "Active Photographers" },
               { value: "99.9%", label: "Payment Success" },
               { value: "10s", label: "MLS Processing" },
               { value: "$2M+", label: "Revenue Collected" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-5">
-                <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                <div className="text-sm text-white/80">{stat.label}</div>
+              <div key={stat.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 xl:p-5">
+                <div className="text-2xl xl:text-3xl font-bold mb-1">{stat.value}</div>
+                <div className="text-xs xl:text-sm text-white/80">{stat.label}</div>
               </div>
             ))}
           </div>
 
           {/* Features */}
-          <div className="space-y-4">
+          <div className="space-y-3 xl:space-y-4">
             {[
               { icon: Shield, text: "Bank-grade security & encryption" },
               { icon: Zap, text: "Lightning-fast photo delivery" },
@@ -98,7 +98,7 @@ export default function LoginPage() {
                 <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
                   <feature.icon className="h-4 w-4" />
                 </div>
-                <span className="text-white/90">{feature.text}</span>
+                <span className="text-sm xl:text-base text-white/90">{feature.text}</span>
               </div>
             ))}
           </div>
@@ -112,27 +112,27 @@ export default function LoginPage() {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 gradient-hero">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 gradient-hero">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-2.5 mb-10 justify-center">
+          <div className="lg:hidden flex items-center gap-2.5 mb-8 sm:mb-10 justify-center">
             <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
               <Camera className="h-5 w-5 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold tracking-tight">
               Property<span className="text-gradient">Drop</span>
             </span>
           </div>
 
           <Card className="border-2 shadow-2xl">
-            <CardHeader className="space-y-3 pb-6">
-              <CardTitle className="text-3xl font-bold">Sign in</CardTitle>
-              <CardDescription className="text-base">
+            <CardHeader className="space-y-2 sm:space-y-3 pb-4 sm:pb-6">
+              <CardTitle className="text-2xl sm:text-3xl font-bold">Sign in</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
                 Access your dashboard and manage your photo delivery jobs
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={onSubmit} className="space-y-5">
+              <form onSubmit={onSubmit} className="space-y-4 sm:space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
@@ -145,7 +145,7 @@ export default function LoginPage() {
                     placeholder="john@photography.com"
                     autoComplete="email"
                     required
-                    className="h-12 text-base"
+                    className="h-11 sm:h-12 text-base"
                   />
                 </div>
 
@@ -169,7 +169,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     autoComplete="current-password"
                     required
-                    className="h-12 text-base"
+                    className="h-11 sm:h-12 text-base"
                   />
                 </div>
 
@@ -182,7 +182,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 text-base font-semibold shadow-lg glow-primary"
+                  className="w-full h-11 sm:h-12 text-base font-semibold shadow-lg glow-primary"
                   size="lg"
                 >
                   {loading ? (
@@ -199,7 +199,7 @@ export default function LoginPage() {
                 </Button>
               </form>
             </CardContent>
-            <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 p-6">
+            <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 p-4 sm:p-6">
               <div className="text-center text-sm">
                 <span className="text-muted-foreground">Don&apos;t have an account? </span>
                 <Link href="/signup" className="font-semibold text-primary hover:underline">
@@ -208,7 +208,7 @@ export default function LoginPage() {
               </div>
               
               {/* Trust Indicators */}
-              <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Shield className="h-3.5 w-3.5 text-green-500" />
                   <span>Secure Login</span>
@@ -226,7 +226,7 @@ export default function LoginPage() {
           </Card>
 
           {/* Back to Homepage */}
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center">
             <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
               <ArrowRight className="h-3.5 w-3.5 rotate-180" />
               Back to Homepage

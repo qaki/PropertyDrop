@@ -37,39 +37,39 @@ export default async function SettingsPage() {
     .toUpperCase() || "U";
 
   return (
-    <div className="container mx-auto py-8 px-6 max-w-4xl">
+    <div className="container mx-auto py-6 sm:py-8 px-4 sm:px-6 max-w-4xl">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
-            <SettingsIcon className="h-5 w-5 text-white" />
+          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
+            <SettingsIcon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight">Settings</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">Settings</h1>
         </div>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
           Manage your account settings and preferences
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Profile Section */}
         <Card className="border-2 card-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <User className="h-4 w-4 text-primary" />
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
               </div>
               Profile Information
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Update your personal information and how it appears to clients
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="flex items-center gap-6">
-              <Avatar className="h-20 w-20 border-4 border-primary/20 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <Avatar className="h-16 w-16 sm:h-20 sm:w-20 border-4 border-primary/20 shadow-lg">
                 {session.user.image && <AvatarImage src={session.user.image} />}
-                <AvatarFallback className="gradient-primary text-white text-2xl font-bold">
+                <AvatarFallback className="gradient-primary text-white text-xl sm:text-2xl font-bold">
                   {userInitials}
                 </AvatarFallback>
               </Avatar>
@@ -87,20 +87,20 @@ export default async function SettingsPage() {
 
         {/* Branding Section */}
         <Card className="border-2 card-hover">
-          <CardHeader>
-            <div className="flex items-center justify-between">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                  <Briefcase className="h-4 w-4 text-purple-600" />
+                <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <Briefcase className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple-600" />
                 </div>
                 <div>
-                  <CardTitle>Company Branding</CardTitle>
-                  <CardDescription className="mt-1">
+                  <CardTitle className="text-lg sm:text-xl">Company Branding</CardTitle>
+                  <CardDescription className="mt-1 text-sm">
                     Customize how your brand appears on client delivery pages
                   </CardDescription>
                 </div>
               </div>
-              <Badge className="bg-purple-100 text-purple-700 border-purple-200">Pro Feature</Badge>
+              <Badge className="bg-purple-100 text-purple-700 border-purple-200 self-start sm:self-center">Pro Feature</Badge>
             </div>
           </CardHeader>
           <CardContent>
@@ -113,14 +113,14 @@ export default async function SettingsPage() {
 
         {/* Security Section */}
         <Card className="border-2 card-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-green-100 flex items-center justify-center">
-                <Shield className="h-4 w-4 text-green-600" />
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-green-100 flex items-center justify-center">
+                <Shield className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-600" />
               </div>
               Security
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Manage your password and security preferences
             </CardDescription>
           </CardHeader>
@@ -131,14 +131,14 @@ export default async function SettingsPage() {
 
         {/* Payment Settings Section */}
         <Card className="border-2 card-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center">
-                <Wallet className="h-4 w-4 text-amber-600" />
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                <Wallet className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-amber-600" />
               </div>
               Payment Settings
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Connect your Stripe account to receive payments from clients
             </CardDescription>
           </CardHeader>
@@ -149,14 +149,14 @@ export default async function SettingsPage() {
 
         {/* Notifications Section */}
         <Card className="border-2 card-hover">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                <Bell className="h-4 w-4 text-blue-600" />
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                <Bell className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
               </div>
               Notifications
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Choose what emails you want to receive
             </CardDescription>
           </CardHeader>
@@ -167,19 +167,19 @@ export default async function SettingsPage() {
               { title: "Marketing Emails", desc: "Receive tips, updates, and special offers", enabled: false },
             ].map((notification) => (
               <div key={notification.title}>
-                <div className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 gap-2">
+                  <div className="flex items-start sm:items-center gap-3">
+                    <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5 sm:mt-0" />
                     <div>
-                      <p className="font-medium">{notification.title}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-sm sm:text-base">{notification.title}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
                         {notification.desc}
                       </p>
                     </div>
                   </div>
                   <Badge 
                     variant={notification.enabled ? "default" : "secondary"}
-                    className={notification.enabled ? "bg-green-100 text-green-700" : ""}
+                    className={`self-start sm:self-center flex-shrink-0 ${notification.enabled ? "bg-green-100 text-green-700" : ""}`}
                   >
                     <CheckCircle2 className="h-3 w-3 mr-1" />
                     {notification.enabled ? "Enabled" : "Disabled"}
@@ -197,22 +197,22 @@ export default async function SettingsPage() {
         {/* Billing Section - Only show if user has paid subscription */}
         {hasPaidSubscription && (
           <Card className="border-2 card-hover">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                  <CreditCard className="h-4 w-4 text-indigo-600" />
+            <CardHeader className="pb-4 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                  <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-indigo-600" />
                 </div>
                 Billing & Subscription
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm">
                 Manage your subscription through Whop
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-4 border-2 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-2 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 gap-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="font-semibold text-lg">Professional Plan</p>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <p className="font-semibold text-base sm:text-lg">Professional Plan</p>
                     <Badge className="bg-green-100 text-green-700 border-green-200">Active</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -222,7 +222,7 @@ export default async function SettingsPage() {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="font-medium"
+                  className="font-medium w-full sm:w-auto"
                   asChild
                 >
                   <a 

@@ -37,33 +37,33 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex bg-background">
       {/* Left Side - Premium Branding Panel */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-primary text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 gradient-primary text-white p-8 xl:p-12 flex-col justify-between relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 pattern-dots opacity-10" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
         
         <div className="relative">
-          <Link href="/" className="flex items-center gap-2.5 mb-16">
+          <Link href="/" className="flex items-center gap-2.5 mb-12 xl:mb-16">
             <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center shadow-lg backdrop-blur">
               <Camera className="h-6 w-6 text-white" />
             </div>
-            <span className="text-3xl font-bold tracking-tight">
+            <span className="text-2xl xl:text-3xl font-bold tracking-tight">
               PropertyDrop
             </span>
           </Link>
           
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl xl:text-5xl font-bold mb-4 xl:mb-6 leading-tight">
             Stop Chasing Payments.
             <br />
             Start Selling Photos.
           </h1>
           
-          <p className="text-xl text-white/90 mb-12 leading-relaxed max-w-md">
+          <p className="text-lg xl:text-xl text-white/90 mb-8 xl:mb-12 leading-relaxed max-w-md">
             Join hundreds of real estate photographers who never worry about unpaid invoices.
           </p>
 
-          <div className="space-y-6">
+          <div className="space-y-4 xl:space-y-6">
             {[
               {
                 title: "Payment Protection",
@@ -78,13 +78,13 @@ export default function SignupPage() {
                 desc: "$69/month for unlimited jobs, storage, and photos. No credits, no surprises.",
               },
             ].map((feature) => (
-              <div key={feature.title} className="flex items-start gap-4">
-                <div className="h-12 w-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 backdrop-blur">
-                  <CheckCircle2 className="h-6 w-6" />
+              <div key={feature.title} className="flex items-start gap-3 xl:gap-4">
+                <div className="h-10 w-10 xl:h-12 xl:w-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 backdrop-blur">
+                  <CheckCircle2 className="h-5 w-5 xl:h-6 xl:w-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
-                  <p className="text-white/80 text-sm leading-relaxed">
+                  <h3 className="font-semibold text-base xl:text-lg mb-1">{feature.title}</h3>
+                  <p className="text-white/80 text-xs xl:text-sm leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -102,31 +102,31 @@ export default function SignupPage() {
       </div>
 
       {/* Right Side - Signup Form */}
-      <div className="flex-1 flex items-center justify-center p-8 gradient-hero">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 gradient-hero">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-2.5 mb-10 justify-center">
+          <div className="lg:hidden flex items-center gap-2.5 mb-8 sm:mb-10 justify-center">
             <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
               <Camera className="h-5 w-5 text-white" />
             </div>
-            <span className="text-2xl font-bold tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold tracking-tight">
               Property<span className="text-gradient">Drop</span>
             </span>
           </div>
 
           <Card className="border-2 shadow-2xl">
-            <CardHeader className="space-y-3 pb-6">
+            <CardHeader className="space-y-2 sm:space-y-3 pb-4 sm:pb-6">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-primary" />
                 <span className="text-sm font-semibold text-primary">14-Day Free Trial</span>
               </div>
-              <CardTitle className="text-3xl font-bold">Create your account</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-2xl sm:text-3xl font-bold">Create your account</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
                 Start your free trial. No credit card required.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={onSubmit} className="space-y-5">
+              <form action={onSubmit} className="space-y-4 sm:space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" />
@@ -138,7 +138,7 @@ export default function SignupPage() {
                     type="text"
                     placeholder="John Smith"
                     required
-                    className="h-12 text-base"
+                    className="h-11 sm:h-12 text-base"
                   />
                   <p className="text-xs text-muted-foreground">
                     Your name will appear on client delivery pages
@@ -157,7 +157,7 @@ export default function SignupPage() {
                     placeholder="john@photography.com"
                     autoComplete="email"
                     required
-                    className="h-12 text-base"
+                    className="h-11 sm:h-12 text-base"
                   />
                   <p className="text-xs text-muted-foreground">
                     We&apos;ll send your delivery links and payment notifications here
@@ -176,7 +176,7 @@ export default function SignupPage() {
                     placeholder="••••••••"
                     autoComplete="new-password"
                     required
-                    className="h-12 text-base"
+                    className="h-11 sm:h-12 text-base"
                   />
                   <p className="text-xs text-muted-foreground">
                     Must be at least 8 characters long
@@ -201,7 +201,7 @@ export default function SignupPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 text-base font-semibold shadow-lg glow-primary"
+                  className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-lg glow-primary"
                   size="lg"
                 >
                   {loading ? (
@@ -211,7 +211,8 @@ export default function SignupPage() {
                     </>
                   ) : (
                     <>
-                      Create Account & Start Free Trial
+                      <span className="hidden sm:inline">Create Account & Start Free Trial</span>
+                      <span className="sm:hidden">Start Free Trial</span>
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </>
                   )}
@@ -231,7 +232,7 @@ export default function SignupPage() {
                 </div>
               </form>
             </CardContent>
-            <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 p-6">
+            <CardFooter className="flex flex-col gap-3 sm:gap-4 border-t bg-muted/30 p-4 sm:p-6">
               <div className="text-center text-sm">
                 <span className="text-muted-foreground">Already have an account? </span>
                 <Link href="/login" className="font-semibold text-primary hover:underline">
@@ -240,9 +241,9 @@ export default function SignupPage() {
               </div>
               
               {/* Trust Badges */}
-              <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-muted-foreground">
                 {[
-                  { icon: CheckCircle2, text: "14-day free trial" },
+                  { icon: CheckCircle2, text: "14-day trial" },
                   { icon: CheckCircle2, text: "No credit card" },
                   { icon: CheckCircle2, text: "Cancel anytime" },
                 ].map((badge) => (
@@ -256,7 +257,7 @@ export default function SignupPage() {
           </Card>
 
           {/* Back to Homepage */}
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center">
             <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
               <ArrowRight className="h-3.5 w-3.5 rotate-180" />
               Back to Homepage
