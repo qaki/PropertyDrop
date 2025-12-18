@@ -16,14 +16,44 @@ export function checkSubscriptionStatus(user: User): SubscriptionInfo {
   const now = new Date();
   
   // Handle users created before trial system was implemented
-  // If no trial dates exist but status is "trial", give them a trial starting now
-  if (!user.trialEndDate && (!user.subscriptionStatus || user.subscriptionStatus === "trial" || user.subscriptionStatus === "inactive")) {
-    // Default to 14-day trial for users without trial dates
+  // If no trial end date but we have a trial start date, calculate from that
+  if (!user.trialEndDate && user.trialStartDate && (!user.subscriptionStatus || user.subscriptionStatus === "trial" || user.subscriptionStatus === "inactive")) {
+    const trialStart = new Date(user.trialStartDate);
+    const trialEnd = new Date(trialStart);
+    trialEnd.setDate(trialEnd.getDate() + 14); // 14 day trial
+    
+    const isTrialActive = trialEnd > now;
+    if (isTrialActive) {
+      const daysRemaining = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      return {
+        isActive: true,
+        isTrial: true,
+        isExpired: false,
+        daysRemaining,
+        status: "trial",
+        trialEndDate: trialEnd,
+      };
+    } else {
+      // Trial expired
+      return {
+        isActive: false,
+        isTrial: false,
+        isExpired: true,
+        daysRemaining: 0,
+        status: "expired",
+        trialEndDate: trialEnd,
+      };
+    }
+  }
+  
+  // Fallback for legacy users with no trial dates at all - still active but show warning
+  if (!user.trialEndDate && !user.trialStartDate && (!user.subscriptionStatus || user.subscriptionStatus === "trial" || user.subscriptionStatus === "inactive")) {
+    // Default to 7 days for users without any trial dates (legacy)
     return {
       isActive: true,
       isTrial: true,
       isExpired: false,
-      daysRemaining: 14,
+      daysRemaining: 7, // Reduced to encourage setting up proper trial
       status: "trial",
       trialEndDate: null,
     };
