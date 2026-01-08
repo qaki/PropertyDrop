@@ -81,7 +81,7 @@ export async function updateBranding(formData: FormData) {
   }
 }
 
-export async function updatePassword(formData: FormData) {
+export async function updatePassword(formData: FormData): Promise<{ success: boolean; message?: string; error?: string }> {
   const session = await auth();
   if (!session?.user?.id) {
     return { success: false, error: "Not authenticated" };
