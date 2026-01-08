@@ -80,3 +80,43 @@ export async function updateBranding(formData: FormData) {
     return { success: false, error: "Failed to update branding" };
   }
 }
+
+export async function updatePassword(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const currentPassword = formData.get("currentPassword") as string;
+  const newPassword = formData.get("newPassword") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  // Validate inputs
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return { success: false, error: "All fields are required" };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { success: false, error: "New passwords do not match" };
+  }
+
+  if (newPassword.length < 8) {
+    return { success: false, error: "Password must be at least 8 characters long" };
+  }
+
+  try {
+    // Note: NextAuth with credentials provider doesn't have built-in password update
+    // This is a placeholder - you'll need to implement password hashing if you're using credentials
+    // For OAuth providers (Google, etc.), password update is not applicable
+    
+    // Since this app uses OAuth (Google/GitHub), password changes aren't supported
+    return { 
+      success: false, 
+      error: "Password changes are not available. You're signed in with an OAuth provider (Google/GitHub)." 
+    };
+    
+  } catch (error) {
+    console.error("Password update error:", error);
+    return { success: false, error: "Failed to update password" };
+  }
+}
