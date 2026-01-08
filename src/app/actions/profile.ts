@@ -3,6 +3,7 @@
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 
 export async function updateProfile(formData: FormData) {
   const session = await auth();
@@ -105,18 +106,44 @@ export async function updatePassword(formData: FormData): Promise<{ success: boo
   }
 
   try {
-    // Note: NextAuth with credentials provider doesn't have built-in password update
-    // This is a placeholder - you'll need to implement password hashing if you're using credentials
-    // For OAuth providers (Google, etc.), password update is not applicable
-    
-    // Since this app uses OAuth (Google/GitHub), password changes aren't supported
-    return { 
-      success: false, 
-      error: "Password changes are not available. You're signed in with an OAuth provider (Google/GitHub)." 
-    };
+    // Get user from database
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      select: { passwordHash: true },
+    });
+
+    if (!user?.passwordHash) {
+      return { 
+        success: false, 
+        error: "Cannot change password. You're signed in with a social provider (Google, GitHub, etc.)." 
+      };
+    }
+
+    // Verify current password
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isCurrentPasswordValid) {
+      return { success: false, error: "Current password is incorrect" };
+    }
+
+    // Check if new password is same as current password
+    const isSamePassword = await bcrypt.compare(newPassword, user.passwordHash);
+    if (isSamePassword) {
+      return { success: false, error: "New password must be different from your current password" };
+    }
+
+    // Hash new password
+    const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+    // Update password in database
+    await db.user.update({
+      where: { id: session.user.id },
+      data: { passwordHash: newPasswordHash },
+    });
+
+    return { success: true, message: "Password updated successfully" };
     
   } catch (error) {
     console.error("Password update error:", error);
-    return { success: false, error: "Failed to update password" };
+    return { success: false, error: "Failed to update password. Please try again." };
   }
 }
