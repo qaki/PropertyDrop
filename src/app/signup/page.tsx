@@ -75,7 +75,7 @@ export default function SignupPage() {
               },
               {
                 title: "Flat-Rate Pricing",
-                desc: "$69/month for unlimited jobs, storage, and photos. No credits, no surprises.",
+                desc: "$49/month for unlimited jobs, storage, and photos. No credits, no surprises.",
               },
             ].map((feature) => (
               <div key={feature.title} className="flex items-start gap-3 xl:gap-4">

@@ -4,23 +4,31 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Loader2, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 import { UploadButton } from "~/lib/uploadthing";
+import { updateProfilePhoto } from "~/app/actions/profile";
+import { useRouter } from "next/navigation";
 
 export function ProfilePhotoUpload({ onUploadComplete }: { onUploadComplete?: (url: string) => void }) {
   const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const router = useRouter();
 
   return (
     <div className="space-y-3">
       <UploadButton
         endpoint="profilePhotoUploader"
-        onClientUploadComplete={(res) => {
-          setIsUploading(false);
+        onClientUploadComplete={async (res) => {
           if (res && res[0]?.url) {
-            setMessage({ type: "success", text: "Photo uploaded successfully!" });
-            onUploadComplete?.(res[0].url);
+            // Save the photo URL to the database
+            const result = await updateProfilePhoto(res[0].url);
             
-            // TODO: Save the URL to the user's profile in the database
-            console.log("Uploaded photo URL:", res[0].url);
+            setIsUploading(false);
+            if (result.success) {
+              setMessage({ type: "success", text: "Profile photo updated successfully!" });
+              onUploadComplete?.(res[0].url);
+              router.refresh();
+            } else {
+              setMessage({ type: "error", text: result.error || "Failed to update photo" });
+            }
           }
         }}
         onUploadError={(error: Error) => {
@@ -32,7 +40,7 @@ export function ProfilePhotoUpload({ onUploadComplete }: { onUploadComplete?: (u
           setMessage(null);
         }}
         appearance={{
-          button: "bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 text-sm",
+          button: "bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 text-sm font-medium rounded-lg shadow-sm",
           allowedContent: "text-xs text-muted-foreground",
         }}
       />
@@ -60,7 +68,7 @@ export function ProfilePhotoUpload({ onUploadComplete }: { onUploadComplete?: (u
       )}
 
       <p className="text-xs text-muted-foreground">
-        JPG, PNG or GIF. Max size 4MB. (Feature in development - photo will upload but not persist yet)
+        JPG, PNG or GIF. Max size 4MB. Your photo will appear throughout the app.
       </p>
     </div>
   );

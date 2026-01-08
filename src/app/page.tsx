@@ -370,7 +370,7 @@ export default async function Home() {
                     <tr className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 sm:px-6 py-4 sm:py-5 text-xs sm:text-sm font-medium">Pricing Model</td>
                       <td className="px-4 sm:px-6 py-4 sm:py-5 text-center">
-                        <span className="text-xs sm:text-sm font-bold text-primary bg-primary/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">$69/month flat</span>
+                        <span className="text-xs sm:text-sm font-bold text-primary bg-primary/10 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">$49/month flat</span>
                       </td>
                       <td className="px-4 sm:px-6 py-4 sm:py-5 text-center text-xs sm:text-sm text-muted-foreground">
                         $0.50-$5 per job

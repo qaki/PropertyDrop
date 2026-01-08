@@ -71,7 +71,7 @@ export function SubscriptionGuard({ subscriptionInfo, children }: SubscriptionGu
         </Link>
 
         <p className="mt-6 text-sm text-gray-500">
-          Only $69.99/month • Cancel anytime • Your data is saved
+          Only $49.99/month • Cancel anytime • Your data is saved
         </p>
       </div>
     </div>

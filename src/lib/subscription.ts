@@ -46,14 +46,15 @@ export function checkSubscriptionStatus(user: User): SubscriptionInfo {
     }
   }
   
-  // Fallback for legacy users with no trial dates at all - still active but show warning
+  // Fallback for legacy users with no trial dates at all - calculate from account creation
   if (!user.trialEndDate && !user.trialStartDate && (!user.subscriptionStatus || user.subscriptionStatus === "trial" || user.subscriptionStatus === "inactive")) {
-    // Default to 7 days for users without any trial dates (legacy)
+    // For users without trial dates, use a conservative approach
+    // Assume trial is active for a limited time only
     return {
       isActive: true,
       isTrial: true,
       isExpired: false,
-      daysRemaining: 7, // Reduced to encourage setting up proper trial
+      daysRemaining: 3, // Reduced to encourage using the fix-trial endpoint
       status: "trial",
       trialEndDate: null,
     };

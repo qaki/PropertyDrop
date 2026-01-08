@@ -82,7 +82,10 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold mb-4">4. Payment Terms</h2>
             <p className="text-muted-foreground mb-4">
-              <strong>Subscription Billing:</strong> PropertyDrop charges a monthly subscription fee of $69/month (subject to change with 30 days notice). Subscriptions are billed on a recurring monthly basis.
+              <strong>Subscription Billing:</strong> PropertyDrop charges a monthly subscription fee of $49/month (subject to change with 30 days notice). Subscriptions are billed on a recurring monthly basis.
+            </p>
+            <p>
+              <strong>Cancellation and Refund Policy:</strong> You may cancel your subscription at any time. However, <strong>we do not offer refunds for the current billing period</strong>. Upon cancellation, you will retain access to all features until the end of your paid billing period, after which your subscription will terminate automatically. Your data will be retained for 30 days after cancellation. No cancellation fees apply.
             </p>
             <p className="text-muted-foreground mb-4">
               <strong>Free Trial:</strong> New users may be offered a 14-day free trial. No credit card is required during the trial. After the trial period ends, you will be charged the monthly subscription fee unless you cancel before the trial ends.

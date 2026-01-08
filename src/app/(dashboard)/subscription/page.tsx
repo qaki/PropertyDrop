@@ -3,6 +3,7 @@ import { db } from "~/server/db";
 import { redirect } from "next/navigation";
 import { checkSubscriptionStatus, getSubscriptionMessage } from "~/lib/subscription";
 import { SubscriptionCard } from "./_components/subscription-card";
+import { CancelSubscriptionDialog } from "./_components/cancel-subscription-dialog";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { 
@@ -74,7 +75,11 @@ export default async function SubscriptionPage() {
     },
     {
       q: "Can I cancel anytime?",
-      a: "Yes! You can cancel your subscription anytime. You'll continue to have access until the end of your current billing period.",
+      a: "Yes! You can cancel your subscription anytime. Important: No refunds will be issued for the current billing period. Your access continues until the end of your paid period, then automatically stops. No cancellation fees.",
+    },
+    {
+      q: "What's your refund policy?",
+      a: "We have a strict no-refund policy. If you cancel your subscription, you will NOT receive a refund for the current billing period. However, you'll retain full access until the end of that period. After cancellation, your data is retained for 30 days if you decide to resubscribe.",
     },
     {
       q: "How do I receive payments from clients?",
@@ -110,6 +115,7 @@ export default async function SubscriptionPage() {
                   <h2 className="text-2xl font-bold">
                     {subscriptionInfo.isTrial ? "Free Trial" : 
                      subscriptionInfo.status === "active" ? "Pro Plan" : 
+                     subscriptionInfo.status === "cancelled" ? "Pro Plan (Cancelling)" :
                      "No Active Subscription"}
                   </h2>
                   <Badge className={config.badge.bg}>{config.badge.text}</Badge>
@@ -126,8 +132,24 @@ export default async function SubscriptionPage() {
                     })}
                   </p>
                 )}
+                {user.subscriptionExpiresAt && subscriptionInfo.status === "active" && (
+                  <p className="mt-1 text-sm text-gray-600 flex items-center gap-1">
+                    <Clock className="h-3.5 w-3.5" />
+                    Renews: {new Date(user.subscriptionExpiresAt).toLocaleDateString("en-US", {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </p>
+                )}
               </div>
             </div>
+            {/* Cancel Button for Active Subscribers */}
+            {subscriptionInfo.status === "active" && (
+              <div className="flex-shrink-0">
+                <CancelSubscriptionDialog subscriptionExpiresAt={user.subscriptionExpiresAt} />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -164,7 +186,7 @@ export default async function SubscriptionPage() {
           {/* Pro Plan Card */}
           <SubscriptionCard
             title="Pro Plan"
-            price="$69.99"
+            price="$49.99"
             period="per month"
             features={[
               "Everything in Free Trial",

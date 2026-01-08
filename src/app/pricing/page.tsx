@@ -31,7 +31,7 @@ export default function PricingPage() {
     },
     {
       q: "What happens after my 14-day free trial?",
-      a: "After your trial ends, you'll be charged $69/month. You can cancel anytime before the trial ends and you won't be charged. No tricks, no hidden fees. We believe you'll love PropertyDrop enough to stay!",
+      a: "After your trial ends, you'll be charged $49/month. You can cancel anytime before the trial ends and you won't be charged. No tricks, no hidden fees. We believe you'll love PropertyDrop enough to stay!",
     },
     {
       q: "Are there really no limits on storage or jobs?",
@@ -99,7 +99,7 @@ export default function PricingPage() {
                 </CardDescription>
                 <div className="mt-8 sm:mt-10">
                   <div className="flex items-baseline justify-center gap-1 sm:gap-2">
-                    <span className="text-5xl sm:text-7xl font-extrabold tracking-tight text-gradient">$69</span>
+                    <span className="text-5xl sm:text-7xl font-extrabold tracking-tight text-gradient">$49</span>
                     <span className="text-xl sm:text-2xl text-muted-foreground font-medium">/month</span>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-2 sm:mt-3">Billed monthly • Cancel anytime</p>

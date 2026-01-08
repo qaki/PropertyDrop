@@ -216,7 +216,7 @@ export default async function SettingsPage() {
                     <Badge className="bg-green-100 text-green-700 border-green-200">Active</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    $69.99/month • Billed monthly
+                    $49.99/month • Billed monthly
                   </p>
                 </div>
                 <Button 
